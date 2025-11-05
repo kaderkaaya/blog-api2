@@ -1,0 +1,18 @@
+import { Schema, model, Document } from "mongoose";
+import { UserModel } from "./user.js";
+import { BlogModel } from "./blog.js";
+interface IComment extends Document {
+    userId: string,
+    blogId: string,
+    comment: string
+}
+const CommentShema = new Schema<IComment>({
+    userId: { type: String, ref: UserModel },
+    blogId: { type: String, ref: BlogModel },
+    comment: { type: String }
+},
+    { timestamps: true });
+
+const CommentModel = model<IComment>("Comments", CommentShema);
+
+export default CommentModel;
