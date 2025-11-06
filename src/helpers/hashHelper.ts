@@ -1,0 +1,16 @@
+import  argon2 from "argon2";
+
+export default async function hashPassword(password:string) {
+    try {
+        const hash = await argon2.hash(password,{
+            type:argon2.argon2id,
+            memoryCost:65536,
+            timeCost:3,
+            parallelism:4
+        })
+        return hash;
+        
+    } catch (error) {
+       throw new Error(`error: ${error}`)
+    }
+}
