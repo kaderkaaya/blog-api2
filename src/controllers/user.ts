@@ -8,6 +8,8 @@ class UserController {
             const user = await UserService.register(name, mail, phoneNumber, password);
             res.status(201).json({ success: true, data: { user }, statusCode: 201 });
         } catch (error) {
+            console.log('error',error);
+            
             res.status(500).send({ success: false, error: `${error}`, statusCode: 500 })
         }
     };
