@@ -6,8 +6,8 @@ class UserService {
         if (user) {
             throw new Error('This user already exists');
         }
-        const hashPassw = await hashPassword(password)
-        return await UserData.register(name, mail, phoneNumber, hashPassw)
+        const hashPass = await hashPassword(password)
+        return await UserData.register(name, mail, phoneNumber, hashPass)
     };
     static async login(phoneNumber: string, password: string) {
         const user = await UserData.getUserWithPhoneNum(phoneNumber);
