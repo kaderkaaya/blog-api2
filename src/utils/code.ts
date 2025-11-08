@@ -4,7 +4,7 @@ const salt = 10;
 
 export function generateCode(length = 5) {
     const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-    let code = '';
+    let code: string = '';
     for (let i = 0; i < length; i++) {
         const randomIndex = crypto.randomInt(0, chars.length);
         code += chars[randomIndex]

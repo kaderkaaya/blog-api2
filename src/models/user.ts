@@ -5,7 +5,7 @@ interface IUser extends Document {
     mail: string,
     phoneNumber: string,
     password: string,
-    role: string,
+    role: "writer" | "admin" | "reader",
     status: number,
     profileImg?: string,
     code: string
