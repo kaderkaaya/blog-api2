@@ -29,7 +29,10 @@ class TokenService {
 
     }
     static async reRefreshToken(refreshToken: string, tokenId: string) {
-        await TokenData.reRefreshToken(refreshToken, tokenId)
+       return await TokenData.reRefreshToken(refreshToken, tokenId)
+    }
+    static async logOutUser(userId:string){
+       return await TokenData.logOutUser(userId);
     }
 }
 export default TokenService;

@@ -20,6 +20,12 @@ class TokenData {
 
         )
     }
+    static async logOutUser(userId: string) {
+        await TokenModel.findOneAndUpdate(
+            { userId },
+            { $unset: { token: "" } }
+        )
+    }
 
 }
 export default TokenData;

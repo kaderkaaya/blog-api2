@@ -100,6 +100,17 @@ class UserService {
         const user = await UserData.updateUser(userId, name, mail, phoneNumber)
         return { user };
     }
-    // static async logOut(userId: string) { }
+    static async logOut(userId: string) {
+        const user = await UserData.getMe(userId);
+        const userToken = await TokenService.getUserToken(userId);
+        if(user && userToken){
+            await TokenService.logOutUser(userId)
+        }
+        else {
+         throw new Error('cikis yapilmadi');
+        }
+        return user;
+        
+     }
 }
 export default UserService;
