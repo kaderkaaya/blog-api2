@@ -69,7 +69,7 @@ class UserService {
 
 
         return {
-           ...user.toJSON(),
+            ...user.toJSON(),
             accessToken,
             refreshToken
         };
@@ -96,7 +96,10 @@ class UserService {
         }
         return user;
     }
-    // static async update(userId: string, name: string, mail: string, phoneNumber: string) { }
+    static async update(userId: string, name: string, mail: string, phoneNumber: string): Promise<object> {
+        const user = await UserData.updateUser(userId, name, mail, phoneNumber)
+        return { user };
+    }
     // static async logOut(userId: string) { }
 }
 export default UserService;

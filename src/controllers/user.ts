@@ -44,15 +44,15 @@ class UserController {
             res.status(500).send({ success: false, error: `${error}`, statusCode: 500 })
         }
     };
-    // static async update(req: Request, res: Response): Promise<void> {
-    //     try {
-    //         const { userId, name, mail, phoneNumber } = req.body;
-    //         const user = await UserService.update(userId, name, mail, phoneNumber);
-    //         res.status(201).json({ success: true, data: { user }, statusCode: 201 });
-    //     } catch (error) {
-    //         res.status(500).send({ success: false, error: `${error}`, statusCode: 500 })
-    //     }
-    // };
+    static async update(req: Request, res: Response): Promise<void> {
+        try {
+            const { userId, name, mail, phoneNumber } = req.body;
+            const user = await UserService.update(userId, name, mail, phoneNumber);
+            res.status(201).json({ success: true, data:  user , statusCode: 201 });
+        } catch (error) {
+            res.status(500).send({ success: false, error: `${error}`, statusCode: 500 })
+        }
+    };
 
     // static async logOut(req: Request, res: Response): Promise<void> {
     //     try {

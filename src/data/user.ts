@@ -6,8 +6,8 @@ class UserData {
             mail,
             phoneNumber,
             password: hashPass,
-            code:userC,
-            verifyCode:false
+            code: userC,
+            verifyCode: false
         })
     }
     static async getUser(mail: string, phoneNumber: string) {
@@ -29,12 +29,34 @@ class UserData {
         });
         return user;
     }
-   static async verifiedUserCode(userId:string,){
-    const user = await UserModel.findByIdAndUpdate(
-         { _id: userId },
-         {verifyCode:true}
-    )
-    return user;
-   }
+    static async verifiedUserCode(userId: string,) {
+        const user = await UserModel.findByIdAndUpdate(
+            { _id: userId },
+            { verifyCode: true }
+        )
+        return user;
+    }
+    static async updateUser(userId: string, name: string, mail: string, phoneNumber: string) {
+        const userData: Partial<{
+            name: string,
+            mail: string
+            phoneNumber: string
+        }> = {};
+        if (name) {
+            userData.name = name;
+        }
+        if (mail) {
+            userData.mail = mail;
+        }
+        if (phoneNumber) {
+            userData.phoneNumber = phoneNumber;
+        }
+        return await UserModel.findByIdAndUpdate(
+            { _id: userId },
+            userData,
+            { upsert: true }
+        )
+    }
+
 }
 export default UserData;
