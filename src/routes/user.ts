@@ -3,12 +3,15 @@ const router = express.Router();
 import UserController from "../controllers/user.js";
 import UserSchema from "../schemas/user.js";
 import SchemaHelper from "../helpers/schemaHelper.js";
+import authLimiter from "../helpers/limiter.js";
 
 router.post("/register",
+    authLimiter,
     SchemaHelper.validateSchemaBody(UserSchema.register),
     (UserController.register));
 
 router.post("/login",
+    authLimiter,
     SchemaHelper.validateSchemaBody(UserSchema.login),
     (UserController.login));
 
@@ -17,7 +20,7 @@ router.post("/verifyCode",
     (UserController.verifyCode));
 
 router.get("/getMe",
-   SchemaHelper.validateSchemaQuery(UserSchema.getMe),
+    SchemaHelper.validateSchemaQuery(UserSchema.getMe),
     (UserController.getMe));
 
 router.post("/update",

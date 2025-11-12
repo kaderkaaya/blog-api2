@@ -13,7 +13,8 @@ export async function hashPassword(password: string) {
     } catch (error) {
         throw new Error(`error: ${error}`)
     }
-}
+};
+
 export async function verifyPassword(password: string, userPassword: string) {
     try {
         const verifyPass = await argon2.verify(password, userPassword)
@@ -22,4 +23,4 @@ export async function verifyPassword(password: string, userPassword: string) {
     } catch (error) {
         throw new Error(`error: ${error}`)
     }
-}
+};
