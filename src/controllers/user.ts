@@ -13,6 +13,7 @@ class UserController {
             res.status(500).send({ success: false, error: `${error}`, statusCode: 500 })
         }
     };
+
     static async login(req: Request, res: Response): Promise<void> {
         try {
             const { phoneNumber, password } = req.body;
@@ -22,6 +23,7 @@ class UserController {
             res.status(500).send({ success: false, error: `${error}`, statusCode: 500 })
         }
     };
+
     static async getMe(req: Request, res: Response): Promise<void> {
         try {
             const { userId } = req.query;
@@ -35,6 +37,7 @@ class UserController {
             res.status(500).send({ success: false, error: `${error}`, statusCode: 500 })
         }
     };
+
     static async verifyCode(req: Request, res: Response): Promise<void> {
         try {
             const { code, userId } = req.body;
@@ -44,6 +47,7 @@ class UserController {
             res.status(500).send({ success: false, error: `${error}`, statusCode: 500 })
         }
     };
+
     static async update(req: Request, res: Response): Promise<void> {
         try {
             const { userId, name, mail, phoneNumber } = req.body;
@@ -63,7 +67,6 @@ class UserController {
             res.status(500).send({ success: false, error: `${error}`, statusCode: 500 })
         }
     };
-
 
 }
 export default UserController;

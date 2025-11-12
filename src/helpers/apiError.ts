@@ -5,6 +5,7 @@ class ApiHelper extends Error {
         super(message);
         this.message = message;
         this.code = code;
-    }
+    };
 }
+
 export default ApiHelper;

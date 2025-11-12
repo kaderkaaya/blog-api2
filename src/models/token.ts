@@ -4,6 +4,7 @@ interface IToken extends Document {
     userId: string,
     token: string,
 }
+
 const TokenSchema = new Schema<IToken>({
     userId: { type: String },
     token: { type: String },

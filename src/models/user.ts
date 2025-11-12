@@ -11,6 +11,7 @@ interface IUser extends Document {
     code: string
     verifyCode: boolean
 }
+
 const UserSchema = new Schema<IUser>({
     name: { type: String },
     mail: { type: String, required: true, unique: true },

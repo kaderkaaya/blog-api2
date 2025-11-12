@@ -7,11 +7,13 @@ class TokenData {
             token,
             userId
         })
-    }
+    };
+
     static async getUserToken(userId: string) {
         const token = await TokenModel.findOne({ userId }).sort({ createdAt: -1 });
         return token;
-    }
+    };
+
     static async reRefreshToken(refreshToken: string, tokenId: string) {
         await TokenModel.findByIdAndUpdate(
             { _id: tokenId },
@@ -19,13 +21,15 @@ class TokenData {
             { new: true }
 
         )
-    }
+    };
+
     static async logOutUser(userId: string) {
         await TokenModel.findOneAndUpdate(
             { userId },
             { $unset: { token: "" } }
         )
-    }
+    };
 
 }
+
 export default TokenData;

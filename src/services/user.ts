@@ -5,7 +5,8 @@ import { generateCode } from "../utils/code.js";
 import { verifyUserCode, hashCode } from "../utils/code.js"
 import TokenService from "./token.js";
 import ERROR_CODES from "../utils/error.js";
-import ApiError from "../helpers/apiHelper.js";
+import ApiError from "../helpers/apiError.js";
+
 class UserService {
     static async register(name: string, mail: string, phoneNumber: string, password: string) {
         const user = await UserData.getUser(mail, phoneNumber);
@@ -21,6 +22,7 @@ class UserService {
         const userC = await hashCode(code);
         return await UserData.register(name, mail, phoneNumber, hashPass, userC)
     };
+
     static async login(phoneNumber: string, password: string) {
         const user = await UserData.getUserWithPhoneNum(phoneNumber);
         if (!user) {
@@ -64,23 +66,22 @@ class UserService {
             refreshToken = await TokenService.refreshToken(userId);
         }
 
-
-
         return {
             ...user.toJSON(),
             accessToken,
             refreshToken
         };
     };
+
     static async getMe(userId: string) {
-        const user = await UserData.getMe(userId);
+        const user = await UserData.getUserById(userId);
         if (!user) {
             throw new ApiError(ERROR_CODES.USER_ERROR.message, ERROR_CODES.USER_ERROR.code);
         }
         return user;
     };
     static async verifyCode(code: string, userId: string) {
-        const user = await UserData.getMe(userId);
+        const user = await UserData.getUserById(userId);
         if (!user) {
             throw new ApiError(ERROR_CODES.USER_ERROR.message, ERROR_CODES.USER_ERROR.code);
         }
@@ -96,12 +97,13 @@ class UserService {
         }
         return user;
     }
+
     static async update(userId: string, name: string, mail: string, phoneNumber: string): Promise<object> {
         const user = await UserData.updateUser(userId, name, mail, phoneNumber)
         return { user };
     }
     static async logOut(userId: string) {
-        const user = await UserData.getMe(userId);
+        const user = await UserData.getUserById(userId);
         const userToken = await TokenService.getUserToken(userId);
         if (user && userToken) {
             await TokenService.logOutUser(userId)
@@ -113,5 +115,6 @@ class UserService {
         return user;
 
     }
+    
 }
 export default UserService;

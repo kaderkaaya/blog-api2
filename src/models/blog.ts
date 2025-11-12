@@ -1,5 +1,6 @@
 import { Schema, model, Document } from "mongoose";
 import { UserModel } from "./user.js";
+
 interface IBlog extends Document {
     title: string,
     content: string,
@@ -11,6 +12,7 @@ interface IBlog extends Document {
     isPublished: boolean,
     blogStatus: number,
 }
+
 const BlogSchema = new Schema<IBlog>({
     title: { type: String },
     content: { type: String },

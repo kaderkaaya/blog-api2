@@ -10,7 +10,8 @@ class TokenService {
             { expiresIn: '15m' }
         )
         return token;
-    }
+    };
+
     static async refreshToken(userId: string): Promise<string> {
         const token = jwt.sign(
             { userId },
@@ -19,20 +20,26 @@ class TokenService {
         )
         await TokenData.refreshToken(token, userId);
         return token;
-    }
+    };
+
     static async getUserToken(userId: string) {
         const token = await TokenData.getUserToken(userId)
         return token;
-    }
+    };
+
     static async verifyUserToken(uToken: string) {
         jwt.verify(uToken, JWT_KEY!) as any;
 
-    }
+    };
+
     static async reRefreshToken(refreshToken: string, tokenId: string) {
-       return await TokenData.reRefreshToken(refreshToken, tokenId)
-    }
-    static async logOutUser(userId:string){
-       return await TokenData.logOutUser(userId);
-    }
+        return await TokenData.reRefreshToken(refreshToken, tokenId)
+    };
+
+    static async logOutUser(userId: string) {
+        return await TokenData.logOutUser(userId);
+    };
+
 }
+
 export default TokenService;
