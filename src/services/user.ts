@@ -4,22 +4,17 @@ import { hashPassword, verifyPassword } from "../helpers/hashHelper.js"
 import { generateCode } from "../utils/code.js";
 import { verifyUserCode, hashCode } from "../utils/code.js"
 import TokenService from "./token.js";
+import ERROR_CODES from "../utils/error.js";
+import ApiError from "../helpers/apiHelper.js";
 class UserService {
     static async register(name: string, mail: string, phoneNumber: string, password: string) {
         const user = await UserData.getUser(mail, phoneNumber);
         if (user) {
-            throw new Error('This user already exists');
+            throw new ApiError(ERROR_CODES.EXISTING_USER.message, ERROR_CODES.EXISTING_USER.code);
         }
         const regexPass = zxcvbn(password);
         if (regexPass.score < 3) {
-            throw new Error(
-                `The password must meet the following requirements:
-                         - At least 1 lowercase letter
-                         - At least 1 uppercase letter
-                         - At least 1 number
-                         - At least 1 special character (@.#$!%*?&)
-                         - At least 8 characters long`
-            );
+            throw new ApiError(ERROR_CODES.PASSWORD_ERROR.message, ERROR_CODES.PASSWORD_ERROR.code);
         }
         const hashPass = await hashPassword(password);
         const code = generateCode();
@@ -29,15 +24,18 @@ class UserService {
     static async login(phoneNumber: string, password: string) {
         const user = await UserData.getUserWithPhoneNum(phoneNumber);
         if (!user) {
-            throw new Error('invalid User');
+            throw new ApiError(ERROR_CODES.USER_ERROR.message, ERROR_CODES.USER_ERROR.code);
+
         }
         if (user.verifyCode === false) {
-            throw new Error('verify edinizz')
+            throw new ApiError(ERROR_CODES.VERIFY_ERROR.message, ERROR_CODES.VERIFY_ERROR.code);
+
         }
         const userPassword = user.password;
         const isMatch = await verifyPassword(userPassword, password);
         if (!isMatch) {
-            throw new Error('your password is wrong');
+            throw new ApiError(ERROR_CODES.PASS_ERROR.message, ERROR_CODES.PASS_ERROR.code);
+
         }
         const userId = user._id as string;
         let accessToken: string = '';
@@ -77,14 +75,14 @@ class UserService {
     static async getMe(userId: string) {
         const user = await UserData.getMe(userId);
         if (!user) {
-            throw new Error('invalid User');
+            throw new ApiError(ERROR_CODES.USER_ERROR.message, ERROR_CODES.USER_ERROR.code);
         }
         return user;
     };
     static async verifyCode(code: string, userId: string) {
         const user = await UserData.getMe(userId);
         if (!user) {
-            throw new Error('invalid User');
+            throw new ApiError(ERROR_CODES.USER_ERROR.message, ERROR_CODES.USER_ERROR.code);
         }
         const userCode = user.code;
         const verify = await verifyUserCode(code, userCode)
@@ -92,7 +90,9 @@ class UserService {
             await UserData.verifiedUserCode(userId)
         }
         else {
-            throw new Error('bu kod yok');
+
+            throw new ApiError(ERROR_CODES.CODE_ERROR.message, ERROR_CODES.CODE_ERROR.code);
+
         }
         return user;
     }
@@ -103,14 +103,15 @@ class UserService {
     static async logOut(userId: string) {
         const user = await UserData.getMe(userId);
         const userToken = await TokenService.getUserToken(userId);
-        if(user && userToken){
+        if (user && userToken) {
             await TokenService.logOutUser(userId)
         }
         else {
-         throw new Error('cikis yapilmadi');
+            throw new ApiError(ERROR_CODES.EXIT_ERROR.message, ERROR_CODES.EXIT_ERROR.code);
+
         }
         return user;
-        
-     }
+
+    }
 }
 export default UserService;
