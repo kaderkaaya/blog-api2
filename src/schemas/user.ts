@@ -17,7 +17,7 @@ export const verifyCode = z.object({
     code: z.string(),
 });
 
-export const getMe = z.object({
+export const getself = z.object({
     userId: z.string(),
 });
 
@@ -36,7 +36,7 @@ export default {
     register,
     login,
     verifyCode,
-    getMe,
+    getself,
     update,
     logOut
 }

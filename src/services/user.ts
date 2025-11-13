@@ -24,7 +24,7 @@ class UserService {
     };
 
     static async login(phoneNumber: string, password: string) {
-        const user = await UserData.getUserWithPhoneNum(phoneNumber);
+        const user = await UserData.getUserByNumber(phoneNumber);
         if (!user) {
             throw new ApiError(ERROR_CODES.USER_ERROR.message, ERROR_CODES.USER_ERROR.code);
 
@@ -73,7 +73,7 @@ class UserService {
         };
     };
 
-    static async getMe(userId: string) {
+    static async getself(userId: string) {
         const user = await UserData.getUserById(userId);
         if (!user) {
             throw new ApiError(ERROR_CODES.USER_ERROR.message, ERROR_CODES.USER_ERROR.code);

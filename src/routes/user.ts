@@ -15,19 +15,19 @@ router.post("/login",
     SchemaHelper.validateSchemaBody(UserSchema.login),
     (UserController.login));
 
-router.post("/verifyCode",
+router.post("/verify-code",
     SchemaHelper.validateSchemaBody(UserSchema.verifyCode),
     (UserController.verifyCode));
 
-router.get("/getMe",
-    SchemaHelper.validateSchemaQuery(UserSchema.getMe),
-    (UserController.getMe));
+router.get("/get-user",
+    SchemaHelper.validateSchemaQuery(UserSchema.getself),
+    (UserController.getself));
 
 router.post("/update",
     SchemaHelper.validateSchemaBody(UserSchema.update),
     (UserController.update));
 
-router.post("/logOut",
+router.post("/log-out",
     SchemaHelper.validateSchemaBody(UserSchema.logOut),
     (UserController.logOut));
 

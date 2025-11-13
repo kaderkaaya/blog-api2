@@ -24,14 +24,14 @@ class UserController {
         }
     };
 
-    static async getMe(req: Request, res: Response): Promise<void> {
+    static async getself(req: Request, res: Response): Promise<void> {
         try {
             const { userId } = req.query;
             if (typeof userId !== "string") {
                 res.status(400).json({ success: false, message: "userId is required", statusCode: 400 });
                 return;
             }
-            const user = await UserService.getMe(userId);
+            const user = await UserService.getself(userId);
             res.status(201).json({ success: true, data: { user }, statusCode: 200 });
         } catch (error) {
             res.status(500).send({ success: false, error: `${error}`, statusCode: 500 })

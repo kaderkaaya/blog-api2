@@ -20,7 +20,7 @@ class UserData {
         return user;
     };
 
-    static async getUserWithPhoneNum(phoneNumber: string) {
+    static async getUserByNumber(phoneNumber: string) {
         const user = await UserModel.findOne({
             phoneNumber
         });
