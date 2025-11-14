@@ -11,11 +11,11 @@ class UserService {
     static async register(name: string, mail: string, phoneNumber: string, password: string) {
         const user = await UserData.getUser(mail, phoneNumber);
         if (user) {
-            throw new ApiError(ERROR_CODES.EXISTING_USER.message, ERROR_CODES.EXISTING_USER.code);
+            throw new ApiError(ERROR_CODES.EXISTING_USER.message, ERROR_CODES.EXISTING_USER.statusCode);
         }
         const regexPass = zxcvbn(password);
         if (regexPass.score < 3) {
-            throw new ApiError(ERROR_CODES.PASSWORD_ERROR.message, ERROR_CODES.PASSWORD_ERROR.code);
+            throw new ApiError(ERROR_CODES.PASSWORD_ERROR.message, ERROR_CODES.PASSWORD_ERROR.statusCode);
         }
         const hashPass = await HashHelper.hashPassword(password);
         const code = generateCode();
@@ -26,17 +26,17 @@ class UserService {
     static async login(phoneNumber: string, password: string) {
         const user = await UserData.getUserByNumber(phoneNumber);
         if (!user) {
-            throw new ApiError(ERROR_CODES.USER_ERROR.message, ERROR_CODES.USER_ERROR.code);
+            throw new ApiError(ERROR_CODES.USER_ERROR.message, ERROR_CODES.USER_ERROR.statusCode);
 
         }
         if (user.verifyCode === false) {
-            throw new ApiError(ERROR_CODES.VERIFY_ERROR.message, ERROR_CODES.VERIFY_ERROR.code);
+            throw new ApiError(ERROR_CODES.VERIFY_ERROR.message, ERROR_CODES.VERIFY_ERROR.statusCode);
 
         }
         const userPassword = user.password;
-        const isMatch =  HashHelper.verifyPassword(userPassword, password);
+        const isMatch = await HashHelper.verifyPassword(userPassword, password);
         if (!isMatch) {
-            throw new ApiError(ERROR_CODES.PASS_ERROR.message, ERROR_CODES.PASS_ERROR.code);
+            throw new ApiError(ERROR_CODES.PASS_ERROR.message, ERROR_CODES.PASS_ERROR.statusCode);
 
         }
         const userId = user._id as string;
@@ -76,14 +76,14 @@ class UserService {
     static async getself(userId: string) {
         const user = await UserData.getUserById(userId);
         if (!user) {
-            throw new ApiError(ERROR_CODES.USER_ERROR.message, ERROR_CODES.USER_ERROR.code);
+            throw new ApiError(ERROR_CODES.USER_ERROR.message, ERROR_CODES.USER_ERROR.statusCode);
         }
         return user;
     };
     static async verifyCode(code: string, userId: string) {
         const user = await UserData.getUserById(userId);
         if (!user) {
-            throw new ApiError(ERROR_CODES.USER_ERROR.message, ERROR_CODES.USER_ERROR.code);
+            throw new ApiError(ERROR_CODES.USER_ERROR.message, ERROR_CODES.USER_ERROR.statusCode);
         }
         const userCode = user.code;
         const verify = await verifyUserCode(code, userCode)
@@ -92,7 +92,7 @@ class UserService {
         }
         else {
 
-            throw new ApiError(ERROR_CODES.CODE_ERROR.message, ERROR_CODES.CODE_ERROR.code);
+            throw new ApiError(ERROR_CODES.CODE_ERROR.message, ERROR_CODES.CODE_ERROR.statusCode);
 
         }
         return user;
@@ -109,7 +109,7 @@ class UserService {
             await TokenService.logOutUser(userId)
         }
         else {
-            throw new ApiError(ERROR_CODES.EXIT_ERROR.message, ERROR_CODES.EXIT_ERROR.code);
+            throw new ApiError(ERROR_CODES.EXIT_ERROR.message, ERROR_CODES.EXIT_ERROR.statusCode);
 
         }
         return user;

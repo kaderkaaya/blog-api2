@@ -1,10 +1,10 @@
 class ApiHelper extends Error {
-    code: number;
+    statusCode: number;
     message: string;
-    constructor(message: any, code: any) {
+    constructor(message: any, statusCode: any) {
         super(message);
         this.message = message;
-        this.code = code;
+        this.statusCode = statusCode;
     };
 }
 
