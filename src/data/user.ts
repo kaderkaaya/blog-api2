@@ -1,14 +1,15 @@
 import { UserModel } from "../models/user.js";
 
 class UserData {
-    static async register(name: string, mail: string, phoneNumber: string, hashPass: string, userC: string) {
+    static async register(name: string, mail: string, phoneNumber: string, hashPass: string, userC: string, role:string) {
         return await UserModel.create({
             name,
             mail,
             phoneNumber,
             password: hashPass,
             code: userC,
-            verifyCode: false
+            verifyCode: false,
+            role
         })
     };
 
@@ -63,6 +64,12 @@ class UserData {
             { upsert: true }
         )
     };
+    static async getUserByAuthorId(authorId:string){
+       const user =  await UserModel.findById(
+            {_id:authorId}
+        )
+        return user ;
+    }
 
 }
 export default UserData;

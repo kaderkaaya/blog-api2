@@ -5,6 +5,7 @@ class schemaHelper {
             try {
                 const result = await schema.safeParseAsync(req.body);
                 req.body = result.data;
+                
                 next();
             } catch (error) {
                 res.status(400).send({ success: false, error: `${error}`, statusCode: 400 })

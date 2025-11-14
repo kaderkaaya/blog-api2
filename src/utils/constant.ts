@@ -1,0 +1,11 @@
+export default {
+    BLOG_STATUS: {
+        PUBLISH: 1,
+        UNPUBLISH: 0
+    },
+    ROLES: {
+        WRITER: 0,
+        READER: 1,
+        ADMIN: 2
+    }
+}

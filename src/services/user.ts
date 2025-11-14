@@ -8,7 +8,7 @@ import ERROR_CODES from "../utils/error.js";
 import ApiError from "../helpers/apiError.js";
 
 class UserService {
-    static async register(name: string, mail: string, phoneNumber: string, password: string) {
+    static async register(name: string, mail: string, phoneNumber: string, password: string, role:string) {
         const user = await UserData.getUser(mail, phoneNumber);
         if (user) {
             throw new ApiError(ERROR_CODES.EXISTING_USER.message, ERROR_CODES.EXISTING_USER.statusCode);
@@ -20,7 +20,7 @@ class UserService {
         const hashPass = await HashHelper.hashPassword(password);
         const code = generateCode();
         const userC = await hashCode(code);
-        return await UserData.register(name, mail, phoneNumber, hashPass, userC)
+        return await UserData.register(name, mail, phoneNumber, hashPass, userC, role)
     };
 
     static async login(phoneNumber: string, password: string) {

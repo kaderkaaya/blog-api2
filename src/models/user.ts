@@ -5,7 +5,7 @@ interface IUser extends Document {
     mail: string,
     phoneNumber: string,
     password: string,
-    role: "writer" | "admin" | "reader",
+    role: number,
     status: number,
     profileImg?: string,
     code: string
@@ -17,7 +17,7 @@ const UserSchema = new Schema<IUser>({
     mail: { type: String, required: true, unique: true },
     phoneNumber: { type: String, required: true, unique: true },
     password: { type: String },
-    role: { type: String },
+    role: { type: Number },
     status: { type: Number, default: 1 },
     profileImg: { type: String },
     code: { type: String },

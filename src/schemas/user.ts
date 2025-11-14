@@ -5,6 +5,7 @@ export const register = z.object({
     mail: z.string(),
     phoneNumber: z.string(),
     password: z.string(),
+    role:z.number()
 });
 
 export const login = z.object({

@@ -6,6 +6,7 @@ const app = express();
 import connectDB from './config/conf.js';
 import UserRouter from "./routes/user.js";
 import ErrorHandler from "./helpers/errorHandler.js";
+import BlogRouter from "./routes/blog.js";
 
 app.use(express.json());
 //DB
@@ -14,6 +15,7 @@ connectDB();
 app.use(ErrorHandler);
 //ROUTES
 app.use("/user",UserRouter);
+app.use("/blog",BlogRouter);
 //PORT
 app.listen(PORT!, ()=>{
     console.log(`*****************->PORT:${PORT}`);

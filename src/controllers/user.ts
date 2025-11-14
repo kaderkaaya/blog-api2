@@ -1,11 +1,12 @@
 import { Request, Response } from "express";
 import UserService from "../services/user.js";
 import ResponseHelper from "../helpers/responseHelper.js";
+
 class UserController {
     static async register(req: Request, res: Response): Promise<void> {
         try {
-            const { name, mail, phoneNumber, password } = req.body;
-            const user = await UserService.register(name, mail, phoneNumber, password);
+            const { name, mail, phoneNumber, password, role } = req.body;
+            const user = await UserService.register(name, mail, phoneNumber, password, role);
             ResponseHelper.success(res, { user }, 200)
         } catch (error: any) {
             ResponseHelper.sendError(res, error.message, 500)
@@ -26,7 +27,7 @@ class UserController {
         try {
             const { userId } = req.query;
             if (typeof userId !== "string") {
-            ResponseHelper.sendError(res, 'userId is required', 500)
+                ResponseHelper.sendError(res, 'userId is required', 500)
                 return;
             }
             const user = await UserService.getself(userId);
