@@ -40,4 +40,8 @@ export default {
         statusCode: 108,
         message: 'Exit failed'
     },
+    VERIFY_CODE_ERROR: {
+        statusCode: 109,
+        message: 'this code already verified'
+    },
 }

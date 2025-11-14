@@ -87,34 +87,34 @@ class UserService {
         }
         const userCode = user.code;
         const verify = await verifyUserCode(code, userCode)
-        if (verify === true && user.verifyCode !== true) {
-            await UserData.verifiedUserCode(userId)
+        if (user.verifyCode === true) {
+            throw new ApiError(ERROR_CODES.VERIFY_CODE_ERROR.message, ERROR_CODES.VERIFY_CODE_ERROR.statusCode)
         }
-        else {
-
+        if (verify === false) {
             throw new ApiError(ERROR_CODES.CODE_ERROR.message, ERROR_CODES.CODE_ERROR.statusCode);
 
         }
+        await UserData.verifiedUserCode(userId)
         return user;
-    }
+    };
 
     static async update(userId: string, name: string, mail: string, phoneNumber: string): Promise<object> {
-        const user = await UserData.updateUser(userId, name, mail, phoneNumber)
-        return { user };
-    }
+        const user = await UserData.getUserById(userId);
+        if (!user) {
+            throw new ApiError(ERROR_CODES.USER_ERROR.message, ERROR_CODES.USER_ERROR.statusCode);
+        }
+        const updatedUser = await UserData.updateUser(userId, name, mail, phoneNumber)
+        return { user: updatedUser };
+    };
     static async logOut(userId: string) {
         const user = await UserData.getUserById(userId);
         const userToken = await TokenService.getUserToken(userId);
-        if (user && userToken) {
-            await TokenService.logOutUser(userId)
-        }
-        else {
+        if (!user || !userToken) {
             throw new ApiError(ERROR_CODES.EXIT_ERROR.message, ERROR_CODES.EXIT_ERROR.statusCode);
-
         }
+        await TokenService.logOutUser(userId);
         return user;
+    };
 
-    }
-    
 }
 export default UserService;

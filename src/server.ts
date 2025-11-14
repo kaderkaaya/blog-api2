@@ -8,9 +8,13 @@ import UserRouter from "./routes/user.js";
 import ErrorHandler from "./helpers/errorHandler.js";
 
 app.use(express.json());
+//DB
 connectDB();
-app.use(ErrorHandler)
-app.use("/user",UserRouter)
+//ERROR_HANDLER
+app.use(ErrorHandler);
+//ROUTES
+app.use("/user",UserRouter);
+//PORT
 app.listen(PORT!, ()=>{
     console.log(`*****************->PORT:${PORT}`);
     
