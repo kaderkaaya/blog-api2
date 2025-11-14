@@ -1,6 +1,6 @@
 import zxcvbn from "zxcvbn";
 import UserData from "../data/user.js";
-import { hashPassword, verifyPassword } from "../helpers/hashHelper.js"
+import HashHelper from "../helpers/hashHelper.js"
 import { generateCode } from "../utils/code.js";
 import { verifyUserCode, hashCode } from "../utils/code.js"
 import TokenService from "./token.js";
@@ -17,7 +17,7 @@ class UserService {
         if (regexPass.score < 3) {
             throw new ApiError(ERROR_CODES.PASSWORD_ERROR.message, ERROR_CODES.PASSWORD_ERROR.code);
         }
-        const hashPass = await hashPassword(password);
+        const hashPass = await HashHelper.hashPassword(password);
         const code = generateCode();
         const userC = await hashCode(code);
         return await UserData.register(name, mail, phoneNumber, hashPass, userC)
@@ -34,7 +34,7 @@ class UserService {
 
         }
         const userPassword = user.password;
-        const isMatch = await verifyPassword(userPassword, password);
+        const isMatch =  HashHelper.verifyPassword(userPassword, password);
         if (!isMatch) {
             throw new ApiError(ERROR_CODES.PASS_ERROR.message, ERROR_CODES.PASS_ERROR.code);
 
