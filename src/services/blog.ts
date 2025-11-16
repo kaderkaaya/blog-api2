@@ -38,7 +38,7 @@ class BlogService {
             await BlogData.publishBlog(authorId, blogId, isPublished);
         }
         await BlogData.unpublishBlog(authorId, blogId, isPublished);
-       return existingBlog;
+        return existingBlog;
     };
 
     static async updateBlog(authorId: string, blogId: string, title: string, content: string, isDraft: boolean, isPublished: boolean) {
@@ -59,20 +59,22 @@ class BlogService {
 
     static async addTags(authorId: string, blogId: string, tags: any) {
         const user = await UserData.getUserByAuthorId(authorId);
-        console.log('user', user);
         if (!user) {
             throw new ApiError(ERROR_CODES.USER_ERROR.message, ERROR_CODES.USER_ERROR.statusCode);
         }
         if (user.role === USER_ROLES.ROLES.READER) {
-            throw new Error('no');
+            throw new ApiError(ERROR_CODES.ROLE_ERROR.message, ERROR_CODES.ROLE_ERROR.statusCode);
         }
-        // const blog = await BlogData.addTags(authorId, blogId, tags);
-        // return blog;
+        const existingBlog = await BlogData.getBlog(blogId);
+        if (!existingBlog) {
+            throw new ApiError(ERROR_CODES.BLOG_ERROR.message, ERROR_CODES.BLOG_ERROR.statusCode)
+        }
+        const blog = await BlogData.addTags(authorId, blogId, tags);
+        return blog;
     };
 
     static async uploadBlogImage(authorId: string, blogId: string, imageUrl: string,) {
         const user = await UserData.getUserByAuthorId(authorId);
-        console.log('user', user);
         if (!user) {
             throw new ApiError(ERROR_CODES.USER_ERROR.message, ERROR_CODES.USER_ERROR.statusCode);
         }
@@ -80,7 +82,7 @@ class BlogService {
             throw new ApiError(ERROR_CODES.VERIFY_ERROR.message, ERROR_CODES.VERIFY_ERROR.statusCode)
         }
         if (user.role === USER_ROLES.ROLES.READER) {
-            throw new Error('no');
+            throw new ApiError(ERROR_CODES.ROLE_ERROR.message, ERROR_CODES.ROLE_ERROR.statusCode);
         }
         // const blog = await BlogData.uploadBlogImage(authorId, blogId, imageUrl);
         // return blog;

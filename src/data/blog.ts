@@ -12,7 +12,7 @@ class BlogData {
 
         return blog;
     };
-    
+
     static async publishBlog(authorId: string, blogId: string, isPublished: boolean) {
         const blog = await BlogModel.findOneAndUpdate(
             {
@@ -24,7 +24,7 @@ class BlogData {
         );
         return blog;
     };
-    
+
     static async unpublishBlog(authorId: string, blogId: string, isPublished: boolean) {
         const blog = await BlogModel.findOneAndUpdate(
             {
@@ -71,8 +71,19 @@ class BlogData {
             _id: blogObjectId
         });
         return blog;
+    };
+
+    static async addTags(authorId: string, blogId: string, tags: any) {
+        const blogObjectId = new mongoose.Types.ObjectId(blogId);
+        const blog = await BlogModel.findOneAndUpdate(
+            {
+                _id: blogObjectId,
+                authorId
+            },
+            { tags },
+            { new: true }
+        );
+        return blog;
     }
-
-
 }
 export default BlogData;

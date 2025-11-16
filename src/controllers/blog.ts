@@ -37,13 +37,9 @@ class BlogController {
     static async addTags(req: Request, res: Response): Promise<void> {
         try {
             const { authorId, blogId, tags, } = req.body;
-            const blog = await BlogService.addTags(authorId, tags, blogId);
-            console.log('blog', blog);
-
+            const blog = await BlogService.addTags(authorId, blogId,tags);
             ResponseHelper.success(res, { blog }, 200)
         } catch (error: any) {
-            console.log('error', error);
-
             ResponseHelper.sendError(res, error.message, 500)
         }
     };
