@@ -12,15 +12,27 @@ class BlogData {
 
         return blog;
     };
+    
     static async publishBlog(authorId: string, blogId: string, isPublished: boolean) {
         const blog = await BlogModel.findOneAndUpdate(
             {
                 _id: blogId,
                 authorId
             },
+            { isPublished },
+            { new: true }
+        );
+        return blog;
+    };
+    
+    static async unpublishBlog(authorId: string, blogId: string, isPublished: boolean) {
+        const blog = await BlogModel.findOneAndUpdate(
             {
-                $set: { isPublished: true }
-            }
+                _id: blogId,
+                authorId
+            },
+            { isPublished },
+            { new: true }
         );
         return blog;
     };
@@ -55,7 +67,7 @@ class BlogData {
 
     static async getBlog(blogId: string) {
         const blogObjectId = new mongoose.Types.ObjectId(blogId);
-         const blog = await BlogModel.findById({
+        const blog = await BlogModel.findById({
             _id: blogObjectId
         });
         return blog;

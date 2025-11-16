@@ -7,13 +7,10 @@ class BlogController {
     static async createBlog(req: Request, res: Response): Promise<void> {
         try {
             const { authorId, title, content, isDraft, tags } = req.body;
-            const blog = await BlogService.createBlog(authorId, title, content, isDraft, tags);
-            console.log('blog', blog);
 
+            const blog = await BlogService.createBlog(authorId, title, content, isDraft, tags);
             ResponseHelper.success(res, { blog }, 200)
         } catch (error: any) {
-            console.log('error', error);
-
             ResponseHelper.sendError(res, error.message, 500)
         }
     };
@@ -68,13 +65,10 @@ class BlogController {
     static async publishBlog(req: Request, res: Response): Promise<void> {
         try {
             const { authorId, blogId, isPublished } = req.body;
-            const blog = await BlogService.publishBlog(authorId, blogId, isPublished);
-            console.log('blog', blog);
 
+            const blog = await BlogService.publishBlog(authorId, blogId, isPublished);
             ResponseHelper.success(res, { blog }, 200)
         } catch (error: any) {
-            console.log('error', error);
-
             ResponseHelper.sendError(res, error.message, 500)
         }
     };

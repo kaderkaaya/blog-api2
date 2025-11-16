@@ -16,7 +16,7 @@ class BlogService {
             throw new ApiError(ERROR_CODES.VERIFY_ERROR.message, ERROR_CODES.VERIFY_ERROR.statusCode)
         }
         if (user.role === USER_ROLES.ROLES.READER) {
-            throw new Error('no');
+            throw new ApiError(ERROR_CODES.ROLE_ERROR.message, ERROR_CODES.ROLE_ERROR.statusCode);
         }
         const blog = await BlogData.createBlog(authorId, title, content, isDraft, tags);
         return blog;
@@ -27,14 +27,18 @@ class BlogService {
         if (!user) {
             throw new ApiError(ERROR_CODES.USER_ERROR.message, ERROR_CODES.USER_ERROR.statusCode);
         }
-        if (user.verifyCode === false) {
-            throw new ApiError(ERROR_CODES.VERIFY_ERROR.message, ERROR_CODES.VERIFY_ERROR.statusCode)
-        }
         if (user.role === USER_ROLES.ROLES.READER) {
-             throw new ApiError(ERROR_CODES.ROLE_ERROR.message, ERROR_CODES.ROLE_ERROR.statusCode);
+            throw new ApiError(ERROR_CODES.ROLE_ERROR.message, ERROR_CODES.ROLE_ERROR.statusCode);
         }
-        const blog = await BlogData.publishBlog(authorId, blogId, isPublished);
-        return blog;
+        const existingBlog = await BlogData.getBlog(blogId);
+        if (!existingBlog) {
+            throw new ApiError(ERROR_CODES.BLOG_ERROR.message, ERROR_CODES.BLOG_ERROR.statusCode)
+        }
+        if (existingBlog.isPublished === false) {
+            await BlogData.publishBlog(authorId, blogId, isPublished);
+        }
+        await BlogData.unpublishBlog(authorId, blogId, isPublished);
+       return existingBlog;
     };
 
     static async updateBlog(authorId: string, blogId: string, title: string, content: string, isDraft: boolean, isPublished: boolean) {
