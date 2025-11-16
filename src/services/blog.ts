@@ -73,7 +73,7 @@ class BlogService {
         return blog;
     };
 
-    static async uploadBlogImage(authorId: string, blogId: string, imageUrl: string,) {
+    static async uploadBlogImage(authorId: string, blogId: string, imagePath: string,) {
         const user = await UserData.getUserByAuthorId(authorId);
         if (!user) {
             throw new ApiError(ERROR_CODES.USER_ERROR.message, ERROR_CODES.USER_ERROR.statusCode);
@@ -84,8 +84,8 @@ class BlogService {
         if (user.role === USER_ROLES.ROLES.READER) {
             throw new ApiError(ERROR_CODES.ROLE_ERROR.message, ERROR_CODES.ROLE_ERROR.statusCode);
         }
-        // const blog = await BlogData.uploadBlogImage(authorId, blogId, imageUrl);
-        // return blog;
+        const blog = await BlogData.uploadBlogImage(authorId, blogId, imagePath);
+        return blog;
     };
 }
 export default BlogService;

@@ -1,6 +1,8 @@
 import { Request, Response } from "express";
 import BlogService from "../services/blog.js";
 import ResponseHelper from "../helpers/responseHelper.js";
+import multer from "multer";
+import { v2 as cloudinary } from 'cloudinary';
 
 class BlogController {
 
@@ -37,7 +39,7 @@ class BlogController {
     static async addTags(req: Request, res: Response): Promise<void> {
         try {
             const { authorId, blogId, tags, } = req.body;
-            const blog = await BlogService.addTags(authorId, blogId,tags);
+            const blog = await BlogService.addTags(authorId, blogId, tags);
             ResponseHelper.success(res, { blog }, 200)
         } catch (error: any) {
             ResponseHelper.sendError(res, error.message, 500)
@@ -46,14 +48,24 @@ class BlogController {
 
     static async uploadBlogImage(req: Request, res: Response): Promise<void> {
         try {
-            const { authorId, blogId, imageUrl, } = req.body;
-            const blog = await BlogService.uploadBlogImage(authorId, blogId, imageUrl,);
-            console.log('blog', blog);
-
-            ResponseHelper.success(res, { blog }, 200)
+            cloudinary.config({
+                cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+                api_key: process.env.CLOUDINARY_API_KEY,
+                api_secret: process.env.CLOUDINARY_API_SECRET
+            });
+            const storage = multer.memoryStorage();
+            const upload = multer({ storage: storage });
+            const uploadImage = upload.single('imageUrl');
+            uploadImage(req, res, async (err) => {
+                cloudinary.uploader.upload_stream({ resource_type: 'auto' }, async (result) => {
+                    if (err) return   ResponseHelper.sendError(res, err.message, 400)
+                    const imagePath: string = req.file?.originalname!;
+                    const { authorId, blogId } = req.body;
+                    await BlogService.uploadBlogImage(authorId, blogId, imagePath);
+                    res.json({ public_id: result?.public_id, url: result?.secure_url });
+                }).end(req.file?.buffer)
+            });
         } catch (error: any) {
-            console.log('error', error);
-
             ResponseHelper.sendError(res, error.message, 500)
         }
     };

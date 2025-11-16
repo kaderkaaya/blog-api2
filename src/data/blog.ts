@@ -84,6 +84,18 @@ class BlogData {
             { new: true }
         );
         return blog;
+    };
+
+    static async uploadBlogImage(authorId: string, blogId: string, imagePath: string) {
+        const blog = await BlogModel.findOneAndUpdate(
+            {
+                _id: blogId,
+                authorId
+            },
+            { $set: { imageUrl: imagePath } },
+            { new: true }
+        );
+        return blog
     }
 }
 export default BlogData;

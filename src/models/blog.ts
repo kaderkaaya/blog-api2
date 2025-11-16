@@ -7,7 +7,7 @@ interface IBlog extends Document {
     authorId: string,
     tags?: string[],
     likes: number,
-    imgUrl?: string,
+    imageUrl?: string,
     isDraft: boolean,
     isPublished: boolean,
     blogStatus: number,
@@ -19,7 +19,7 @@ const BlogSchema = new Schema<IBlog>({
     authorId: { type: String, ref: UserModel },
     tags: { type: [String] },
     likes: { type: Number },
-    imgUrl: { type: String },
+    imageUrl: { type: String },
     isDraft: { type: Boolean, default: false },
     isPublished: { type: Boolean, default: false },
     blogStatus: { type: Number, default: 0 }
