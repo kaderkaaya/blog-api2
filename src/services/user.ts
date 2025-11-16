@@ -6,9 +6,10 @@ import { verifyUserCode, hashCode } from "../utils/code.js"
 import TokenService from "./token.js";
 import ERROR_CODES from "../utils/error.js";
 import ApiError from "../helpers/apiError.js";
+import USER_ROLES from "../utils/constant.js";
 
 class UserService {
-    static async register(name: string, mail: string, phoneNumber: string, password: string, role:string) {
+    static async register(name: string, mail: string, phoneNumber: string, password: string, role: string) {
         const user = await UserData.getUser(mail, phoneNumber);
         if (user) {
             throw new ApiError(ERROR_CODES.EXISTING_USER.message, ERROR_CODES.EXISTING_USER.statusCode);
@@ -40,9 +41,26 @@ class UserService {
 
         }
         const userId = user._id as string;
+        const userRole = user.role;
+        let role: string;
+        switch (userRole) {
+            case USER_ROLES.ROLES.ADMIN:
+                role = 'admin';
+                break;
+            case USER_ROLES.ROLES.WRITER:
+                role = 'writer';
+                break;
+            case USER_ROLES.ROLES.READER:
+                role = 'reader';
+                break;
+
+            default:
+                role = 'reader';
+        }
+
         let accessToken: string = '';
         let refreshToken: string = '';
-        accessToken = await TokenService.accessToken(userId);
+        accessToken = await TokenService.accessToken(userId, role);
         const userToken = await TokenService.getUserToken(userId);
         const tokenId = userToken?._id as string;
         const now = Math.floor(Date.now() / 1000);
@@ -50,7 +68,7 @@ class UserService {
             const decoded = userToken?.token as any;
             await TokenService.verifyUserToken(decoded)
             if (decoded.exp < now) {
-                refreshToken = await TokenService.refreshToken(userId);
+                refreshToken = await TokenService.refreshToken(userId, role);
                 await TokenService.reRefreshToken(tokenId, refreshToken);
             }
             else {
@@ -63,7 +81,7 @@ class UserService {
             }
         }
         else {
-            refreshToken = await TokenService.refreshToken(userId);
+            refreshToken = await TokenService.refreshToken(userId, role);
         }
 
         return {

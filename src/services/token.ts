@@ -3,18 +3,26 @@ import TokenData from "../data/token.js";
 const JWT_KEY = process.env.JWT_KEY;
 
 class TokenService {
-    static async accessToken(userId: string): Promise<string> {
+    static async accessToken(userId: string, role: string): Promise<string> {
+        const payload = {
+            userId,
+            role
+        };
         const token = jwt.sign(
-            { userId },
+            payload,
             JWT_KEY!,
             { expiresIn: '15m' }
         )
         return token;
     };
 
-    static async refreshToken(userId: string): Promise<string> {
+    static async refreshToken(userId: string, role: string): Promise<string> {
+          const payload = {
+            userId,
+            role
+        };
         const token = jwt.sign(
-            { userId },
+            payload,
             JWT_KEY!,
             { expiresIn: '7d' }
         )
