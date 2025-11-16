@@ -1,5 +1,5 @@
 import { BlogModel } from "../models/blog.js";
-
+import mongoose from "mongoose";
 class BlogData {
     static async createBlog(authorId: string, title: string, content: string, isDraft: boolean, tags: any) {
         const blog = await BlogModel.create({
@@ -24,33 +24,42 @@ class BlogData {
         );
         return blog;
     };
-    static async updateBlog(authorId: string, blogId: string, title: string, content: string, isDraft: boolean, isPublished: boolean) {
-        const updateData: Partial<{
-            title: any,
-            content: any,
-            isDraft: any,
-            isPublished: any
+    static async updateBlog(blogId: string, title?: string, content?: string, isDraft?: boolean, isPublished?: boolean) {
+        const blogObjectId = new mongoose.Types.ObjectId(blogId);
+        const updateFields: Partial<{
+            title: string,
+            content: string,
+            isDraft: boolean,
+            isPublished: boolean
         }> = {};
-        if (title) {
-            updateData.title = title;
+        if (title !== undefined) {
+            updateFields.title = title;
         }
-        if (content) {
-            updateData.content = content;
+        if (content !== undefined) {
+            updateFields.content = content;
         }
-        if (isDraft) {
-            updateData.isDraft = isDraft;
+        if (isDraft !== undefined) {
+            updateFields.isDraft = isDraft;
         }
-        if (isPublished) {
-            updateData.isPublished = isPublished;
+        if (isPublished !== undefined) {
+            updateFields.isPublished = isPublished;
         }
         const blog = await BlogModel.findByIdAndUpdate(
-            { _id: blogId },
-            updateData,
-            { upsert: true },
-
+            { _id: blogObjectId },
+            updateFields,
+            { new: true }
         );
+
         return blog;
     };
+
+    static async getBlog(blogId: string) {
+        const blogObjectId = new mongoose.Types.ObjectId(blogId);
+         const blog = await BlogModel.findById({
+            _id: blogObjectId
+        });
+        return blog;
+    }
 
 
 }

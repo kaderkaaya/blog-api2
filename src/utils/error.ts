@@ -44,4 +44,12 @@ export default {
         statusCode: 109,
         message: 'this code already verified'
     },
+    BLOG_ERROR: {
+        statusCode: 110,
+        message: 'this blog doesnt exist.'
+    },
+    ROLE_ERROR: {
+        statusCode: 111,
+        message: 'You Dont have this action'
+    },
 }

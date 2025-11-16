@@ -20,15 +20,20 @@ class BlogController {
 
     static async updateBlog(req: Request, res: Response): Promise<void> {
         try {
-            const { authorId, title, content, isDraft, blogId,isPublished } = req.body;
-            const blog = await BlogService.updateBlog(authorId, title, content, isDraft, blogId, isPublished);
-            console.log('blog', blog);
+            const { authorId, title, content, isDraft, blogId, isPublished } = req.body;
 
-            ResponseHelper.success(res, { blog }, 200)
+            const blog = await BlogService.updateBlog(
+                authorId,
+                blogId,
+                title,
+                content,
+                isDraft,
+                isPublished
+            );
+
+            ResponseHelper.success(res, { blog }, 200);
         } catch (error: any) {
-            console.log('error', error);
-
-            ResponseHelper.sendError(res, error.message, 500)
+            ResponseHelper.sendError(res, error.message, 500);
         }
     };
 

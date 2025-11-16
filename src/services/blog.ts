@@ -24,7 +24,6 @@ class BlogService {
 
     static async publishBlog(authorId: string, blogId: string, isPublished: boolean) {
         const user = await UserData.getUserByAuthorId(authorId);
-        console.log('user', user);
         if (!user) {
             throw new ApiError(ERROR_CODES.USER_ERROR.message, ERROR_CODES.USER_ERROR.statusCode);
         }
@@ -32,7 +31,7 @@ class BlogService {
             throw new ApiError(ERROR_CODES.VERIFY_ERROR.message, ERROR_CODES.VERIFY_ERROR.statusCode)
         }
         if (user.role === USER_ROLES.ROLES.READER) {
-            throw new Error('no');
+             throw new ApiError(ERROR_CODES.ROLE_ERROR.message, ERROR_CODES.ROLE_ERROR.statusCode);
         }
         const blog = await BlogData.publishBlog(authorId, blogId, isPublished);
         return blog;
@@ -40,14 +39,17 @@ class BlogService {
 
     static async updateBlog(authorId: string, blogId: string, title: string, content: string, isDraft: boolean, isPublished: boolean) {
         const user = await UserData.getUserByAuthorId(authorId);
-        console.log('user', user);
         if (!user) {
             throw new ApiError(ERROR_CODES.USER_ERROR.message, ERROR_CODES.USER_ERROR.statusCode);
         }
         if (user.role === USER_ROLES.ROLES.READER) {
-            throw new Error('no');
+            throw new ApiError(ERROR_CODES.ROLE_ERROR.message, ERROR_CODES.ROLE_ERROR.statusCode);
         }
-        const blog = await BlogData.updateBlog(authorId, blogId, title, content, isDraft, isPublished);
+        const existingBlog = await BlogData.getBlog(blogId);
+        if (!existingBlog) {
+            throw new ApiError(ERROR_CODES.BLOG_ERROR.message, ERROR_CODES.BLOG_ERROR.statusCode)
+        }
+        const blog = await BlogData.updateBlog(blogId, title, content, isDraft, isPublished);
         return blog;
     }
 

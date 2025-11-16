@@ -10,15 +10,15 @@ export const createBlog = z.object({
 export const publishBlog = z.object({
     authorId: z.string(),
     blogId: z.string(),
-    isPublished: z.boolean(),
+    isPublished: z.boolean().optional(),
 });
 export const updateBlog = z.object({
     blogId:z.string(),
     authorId: z.string(),
-    title: z.string(),
-    content: z.string(),
-    isDraft: z.boolean(),
-     isPublished: z.boolean(),
+    title: z.string().optional(),
+    content: z.string().optional(),
+    isDraft: z.boolean().optional(),
+    isPublished: z.boolean().optional(),
 });
 export const addTags = z.object({
     authorId: z.string(),
