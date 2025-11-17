@@ -19,5 +19,11 @@ router.post("/add-tags",
 router.post("/upload-blog-image",
     SchemaHelper.validateSchemaBody(BlogSchema.uploadBlogImage),
     (BlogController.uploadBlogImage));    
+router.get("/get-blogs",
+    SchemaHelper.validateSchemaQuery(BlogSchema.getBlogs),
+    (BlogController.getBlogs));    
+// router.post("/get-blog",
+//     SchemaHelper.validateSchemaBody(BlogSchema.getBlog),
+//     (BlogController.getBlog));    
 
 export default router;

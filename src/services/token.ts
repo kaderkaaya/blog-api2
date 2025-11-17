@@ -48,6 +48,11 @@ class TokenService {
         return await TokenData.logOutUser(userId);
     };
 
+        static async verifyToken(uToken: string) {
+      const token =  jwt.verify(uToken, JWT_KEY!) as any;
+        return token;
+    };
+
 }
 
 export default TokenService;

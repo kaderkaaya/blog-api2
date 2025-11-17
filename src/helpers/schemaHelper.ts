@@ -17,7 +17,10 @@ class schemaHelper {
         return async (req: Request, res: Response, next: NextFunction) => {
             try {
                 const result = await schema.safeParseAsync(req.query);
-                req.query = result.data;
+                //simdi burda property read-only olduğu icin hata alır ama bu req.body de
+                // hata vermez cunku standart olarak bir plain object olarak gelir
+                //bu yüzden bu sekilde Object.assign yapiyoruz
+                Object.assign(req.query, result.data);
                 next();
             } catch (error) {
                 res.status(400).send({ success: false, error: `${error}`, statusCode: 400 })

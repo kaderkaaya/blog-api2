@@ -7,11 +7,13 @@ export const createBlog = z.object({
     isDraft: z.boolean(),
     tags: z.array(z.string()).min(1).max(10), 
 });
+
 export const publishBlog = z.object({
     authorId: z.string(),
     blogId: z.string(),
     isPublished: z.boolean().optional(),
 });
+
 export const updateBlog = z.object({
     blogId:z.string(),
     authorId: z.string(),
@@ -20,15 +22,26 @@ export const updateBlog = z.object({
     isDraft: z.boolean().optional(),
     isPublished: z.boolean().optional(),
 });
+
 export const addTags = z.object({
     authorId: z.string(),
     blogId:z.string(),
     tags: z.array(z.string()).min(1).max(10), 
 });
+
 export const uploadBlogImage = z.object({
     authorId: z.string(),
     blogId:z.string(),
     imageUrl: z.string(),
+});
+
+export const getBlogs = z.object({
+  token :z.string(),
+});
+
+export const getBlog = z.object({
+  token :z.string(),
+  blogId:z.string(),
 });
 
 
@@ -37,5 +50,7 @@ export default {
     publishBlog,
     updateBlog,
     addTags,
-    uploadBlogImage
+    uploadBlogImage,
+    getBlogs,
+    getBlog
 }

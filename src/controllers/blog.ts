@@ -81,5 +81,24 @@ class BlogController {
         }
     };
 
+    static async getBlogs(req: Request, res: Response): Promise<void> {
+        try {
+            console.log('req.qqq',req.query);
+            
+            const { token } = req.query;
+           if (typeof token !== "string") {
+              ResponseHelper.sendError(res, 'token is required', 500);
+              return;
+           }
+            const blog = await BlogService.getBlogs(token);
+            ResponseHelper.success(res, { blog }, 200)
+        } catch (error: any) {
+            console.log('error',error);
+            
+            ResponseHelper.sendError(res, error.message, 500)
+        }
+    };
+    
+
 }
 export default BlogController;

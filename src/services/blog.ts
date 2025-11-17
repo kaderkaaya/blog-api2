@@ -3,12 +3,12 @@ import ERROR_CODES from "../utils/error.js";
 import ApiError from "../helpers/apiError.js";
 import USER_ROLES from "../utils/constant.js";
 import BlogData from "../data/blog.js";
+import TokenService from "./token.js";
 
 class BlogService {
 
     static async createBlog(authorId: string, title: string, content: string, isDraft: boolean, tags: any) {
         const user = await UserData.getUserByAuthorId(authorId);
-        console.log('user', user);
         if (!user) {
             throw new ApiError(ERROR_CODES.USER_ERROR.message, ERROR_CODES.USER_ERROR.statusCode);
         }
@@ -87,5 +87,19 @@ class BlogService {
         const blog = await BlogData.uploadBlogImage(authorId, blogId, imagePath);
         return blog;
     };
+    static async getBlogs(token: string) {
+        const uToken = token;
+        const userToken = await TokenService.verifyToken(uToken);
+        const blogs = await BlogData.getBlogs();
+        if (userToken.role === 'reader') {
+            return blogs.filter(blog =>
+                blog.isPublished === true)
+        }
+        if (userToken.role === 'writer') {
+            return blogs.filter(blog => blog.authorId === userToken.userId)
+        }
+        return { blogs }
+
+    }
 }
 export default BlogService;

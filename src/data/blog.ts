@@ -96,6 +96,10 @@ class BlogData {
             { new: true }
         );
         return blog
+    };
+    static async getBlogs(){
+        const blogs = await BlogModel.find()
+        return blogs;
     }
 }
 export default BlogData;
