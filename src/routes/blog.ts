@@ -15,15 +15,15 @@ router.post("/publish-blog",
     (BlogController.publishBlog));
 router.post("/add-tags",
     SchemaHelper.validateSchemaBody(BlogSchema.addTags),
-    (BlogController.addTags));            
+    (BlogController.addTags));
 router.post("/upload-blog-image",
     SchemaHelper.validateSchemaBody(BlogSchema.uploadBlogImage),
-    (BlogController.uploadBlogImage));    
+    (BlogController.uploadBlogImage));
 router.get("/get-blogs",
     SchemaHelper.validateSchemaQuery(BlogSchema.getBlogs),
-    (BlogController.getBlogs));    
-// router.post("/get-blog",
-//     SchemaHelper.validateSchemaBody(BlogSchema.getBlog),
-//     (BlogController.getBlog));    
+    (BlogController.getBlogs));
+router.get("/get-blog",
+    SchemaHelper.validateSchemaQuery(BlogSchema.getBlog),
+    (BlogController.getBlog));
 
 export default router;

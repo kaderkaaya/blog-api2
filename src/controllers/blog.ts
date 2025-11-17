@@ -58,7 +58,7 @@ class BlogController {
             const uploadImage = upload.single('imageUrl');
             uploadImage(req, res, async (err) => {
                 cloudinary.uploader.upload_stream({ resource_type: 'auto' }, async (result) => {
-                    if (err) return   ResponseHelper.sendError(res, err.message, 400)
+                    if (err) return ResponseHelper.sendError(res, err.message, 400)
                     const imagePath: string = req.file?.originalname!;
                     const { authorId, blogId } = req.body;
                     await BlogService.uploadBlogImage(authorId, blogId, imagePath);
@@ -83,22 +83,36 @@ class BlogController {
 
     static async getBlogs(req: Request, res: Response): Promise<void> {
         try {
-            console.log('req.qqq',req.query);
-            
             const { token } = req.query;
-           if (typeof token !== "string") {
-              ResponseHelper.sendError(res, 'token is required', 500);
-              return;
-           }
+            if (typeof token !== "string") {
+                ResponseHelper.sendError(res, 'token is required', 500);
+                return;
+            }
             const blog = await BlogService.getBlogs(token);
             ResponseHelper.success(res, { blog }, 200)
         } catch (error: any) {
-            console.log('error',error);
-            
             ResponseHelper.sendError(res, error.message, 500)
         }
     };
-    
+
+    static async getBlog(req: Request, res: Response): Promise<void> {
+        try {
+            const { token, blogId } = req.query;
+            if (typeof token !== "string") {
+                ResponseHelper.sendError(res, 'token is required', 500);
+                return;
+            }
+            if (typeof blogId !== "string") {
+                ResponseHelper.sendError(res, 'blogId is required', 500);
+                return;
+            }
+            const blog = await BlogService.getBlog(token, blogId);
+            ResponseHelper.success(res, { blog }, 200)
+        } catch (error: any) {
+            ResponseHelper.sendError(res, error.message, 500)
+        }
+    };
+
 
 }
 export default BlogController;

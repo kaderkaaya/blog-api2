@@ -1,11 +1,11 @@
-import {z} from "zod";
+import { z } from "zod";
 
 export const createBlog = z.object({
     authorId: z.string(),
     title: z.string(),
     content: z.string(),
     isDraft: z.boolean(),
-    tags: z.array(z.string()).min(1).max(10), 
+    tags: z.array(z.string()).min(1).max(10),
 });
 
 export const publishBlog = z.object({
@@ -15,7 +15,7 @@ export const publishBlog = z.object({
 });
 
 export const updateBlog = z.object({
-    blogId:z.string(),
+    blogId: z.string(),
     authorId: z.string(),
     title: z.string().optional(),
     content: z.string().optional(),
@@ -25,23 +25,23 @@ export const updateBlog = z.object({
 
 export const addTags = z.object({
     authorId: z.string(),
-    blogId:z.string(),
-    tags: z.array(z.string()).min(1).max(10), 
+    blogId: z.string(),
+    tags: z.array(z.string()).min(1).max(10),
 });
 
 export const uploadBlogImage = z.object({
     authorId: z.string(),
-    blogId:z.string(),
+    blogId: z.string(),
     imageUrl: z.string(),
 });
 
 export const getBlogs = z.object({
-  token :z.string(),
+    token: z.string(),
 });
 
 export const getBlog = z.object({
-  token :z.string(),
-  blogId:z.string(),
+    token: z.string(),
+    blogId: z.string(),
 });
 
 

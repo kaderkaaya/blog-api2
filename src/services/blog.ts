@@ -87,8 +87,9 @@ class BlogService {
         const blog = await BlogData.uploadBlogImage(authorId, blogId, imagePath);
         return blog;
     };
+
     static async getBlogs(token: string) {
-        const uToken = token;
+        const uToken: string = token;
         const userToken = await TokenService.verifyToken(uToken);
         const blogs = await BlogData.getBlogs();
         if (userToken.role === 'reader') {
@@ -100,6 +101,14 @@ class BlogService {
         }
         return { blogs }
 
+    }
+
+    static async getBlog(token: string, blogId: string) {
+        // const uToken: string = token;
+        // const userToken = await TokenService.verifyToken(uToken);
+        // const userId: string = userToken.userId;
+        const blog = await BlogData.getUserWithBlog(blogId)
+        return blog;
     }
 }
 export default BlogService;

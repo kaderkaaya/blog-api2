@@ -1,5 +1,6 @@
 import { BlogModel } from "../models/blog.js";
-import mongoose from "mongoose";
+import mongoose, { Types } from "mongoose";
+
 class BlogData {
     static async createBlog(authorId: string, title: string, content: string, isDraft: boolean, tags: any) {
         const blog = await BlogModel.create({
@@ -97,9 +98,35 @@ class BlogData {
         );
         return blog
     };
-    static async getBlogs(){
+
+    static async getBlogs() {
         const blogs = await BlogModel.find()
         return blogs;
+    };
+
+    static async getUserWithBlog(blogId: string) {
+        const blogWithUser = await BlogModel.aggregate([
+            {
+                $match: { _id: new Types.ObjectId(blogId) }
+            },
+            {
+                $lookup: {
+                    from: "users",
+                    let: { authorObjId: { $toObjectId: "$authorId" } },
+                    pipeline: [
+                        {
+                            $match:
+                                { $expr: { $eq: ["$_id", "$$authorObjId"] } }
+                        },
+                    ],
+                    as: "owner"
+                }
+            },
+            {
+                $unwind: "$owner"
+            }
+        ]);
+        return blogWithUser
     }
 }
 export default BlogData;
