@@ -21,7 +21,22 @@ class CommentData {
     static async updateCommentStatus(commentId: string) {
         const updatedComment = await CommentModel.findByIdAndUpdate(
             { _id: commentId },
-            { commentStatus: COMMENT.COMMENT_STATUS.PASSIVE }
+            { commentStatus: COMMENT.COMMENT_STATUS.PASSIVE },
+            { new: true }
+        );
+        return updatedComment;
+    };
+    static async updateComment(commentId: string, comment: string) {
+        const updatedFields: Partial<{
+            comment: string
+        }> = {};
+        if (comment) {
+            updatedFields.comment = comment
+        }
+        const updatedComment = await CommentModel.findByIdAndUpdate(
+            { _id: commentId },
+            updatedFields,
+            { new: true },
         );
         return updatedComment;
     }

@@ -40,7 +40,8 @@ class UserData {
     static async verifiedUserCode(userId: string,) {
         const user = await UserModel.findByIdAndUpdate(
             { _id: userId },
-            { verifyCode: true }
+            { verifyCode: true },
+            { new: true }
         )
         return user;
     };

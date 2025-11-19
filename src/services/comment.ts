@@ -33,6 +33,20 @@ class CommentService {
             throw new ApiError(ERROR_CODES.COMMENT_ERROR.message, ERROR_CODES.COMMENT_ERROR.statusCode)
         }
         await CommentData.updateCommentStatus(commentId);
+    };
+
+    static async updateComment(commentId: string, userId: string, comment: string) {
+        const user = await UserData.getUserById(userId);
+        if (!user) {
+            throw new ApiError(ERROR_CODES.USER_ERROR.message, ERROR_CODES.USER_ERROR.statusCode);
+        }
+        const existingComment = await CommentData.getComment(commentId);
+        if (!existingComment) {
+            throw new ApiError(ERROR_CODES.COMMENT_ERROR.message, ERROR_CODES.COMMENT_ERROR.statusCode)
+        }
+        const updatedComment = await CommentData.updateComment(commentId, comment);
+        return updatedComment;
+
     }
 
 
