@@ -4,6 +4,7 @@ import ApiError from "../helpers/apiError.js";
 import USER_ROLES from "../utils/constant.js";
 import BlogData from "../data/blog.js";
 import TokenService from "./token.js";
+import CommentData from "../data/comment.js";
 
 class BlogService {
 
@@ -99,7 +100,7 @@ class BlogService {
         if (userToken.role === 'writer') {
             return blogs.filter(blog => blog.authorId === userToken.userId)
         }
-        return { blogs }
+        return blogs 
 
     }
 
@@ -109,6 +110,24 @@ class BlogService {
         // const userId: string = userToken.userId;
         const blog = await BlogData.getUserWithBlog(blogId)
         return blog;
+    }
+
+    static async getBlogWithComments(userId:string){
+      const user = await UserData.getUserByAuthorId(userId);
+        if (!user) {
+            throw new ApiError(ERROR_CODES.USER_ERROR.message, ERROR_CODES.USER_ERROR.statusCode);
+        }
+        const blogs = await BlogData.getBlogs();
+       const blogWithComments = await Promise.all(blogs.map( async blog=>{
+        const blogId = blog._id;
+        const comments = await CommentData.getComments(userId, blogId as string);
+        return {
+            ...blog.toJSON(),
+            comments
+        }
+       }))
+       return blogWithComments
+        
     }
 }
 export default BlogService;

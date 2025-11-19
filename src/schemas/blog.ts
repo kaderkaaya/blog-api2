@@ -44,6 +44,9 @@ export const getBlog = z.object({
     blogId: z.string(),
 });
 
+export const getBlogWithComments = z.object({
+    userId: z.string(),
+});
 
 export default {
     createBlog,
@@ -52,5 +55,6 @@ export default {
     addTags,
     uploadBlogImage,
     getBlogs,
-    getBlog
+    getBlog,
+    getBlogWithComments,
 }

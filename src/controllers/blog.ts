@@ -88,8 +88,8 @@ class BlogController {
                 ResponseHelper.sendError(res, 'token is required', 500);
                 return;
             }
-            const blog = await BlogService.getBlogs(token);
-            ResponseHelper.success(res, { blog }, 200)
+            const blogs = await BlogService.getBlogs(token);
+            ResponseHelper.success(res, { blogs}, 200)
         } catch (error: any) {
             ResponseHelper.sendError(res, error.message, 500)
         }
@@ -108,6 +108,16 @@ class BlogController {
             }
             const blog = await BlogService.getBlog(token, blogId);
             ResponseHelper.success(res, { blog }, 200)
+        } catch (error: any) {
+            ResponseHelper.sendError(res, error.message, 500)
+        }
+    };
+
+    static async getBlogWithComments(req: Request, res: Response): Promise<void> {
+        try {
+            const { userId } = req.query;
+            const blogWithComments = await BlogService.getBlogWithComments(userId as string);
+            ResponseHelper.success(res, { blogWithComments }, 200)
         } catch (error: any) {
             ResponseHelper.sendError(res, error.message, 500)
         }

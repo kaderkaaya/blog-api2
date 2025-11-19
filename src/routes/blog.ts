@@ -25,5 +25,7 @@ router.get("/get-blogs",
 router.get("/get-blog",
     SchemaHelper.validateSchemaQuery(BlogSchema.getBlog),
     (BlogController.getBlog));
-
+router.get("/get-blog-comments",
+    SchemaHelper.validateSchemaQuery(BlogSchema.getBlogWithComments),
+    (BlogController.getBlogWithComments));
 export default router;
