@@ -1,10 +1,10 @@
-import { Schema, model, Document } from "mongoose";
+import mongoose, { Schema, model, Document } from "mongoose";
 import { UserModel } from "./user.js";
 
 interface IBlog extends Document {
     title: string,
     content: string,
-    authorId: string,
+    authorId: mongoose.Types.ObjectId,
     tags?: string[],
     likes: number,
     imageUrl?: string,
@@ -16,7 +16,7 @@ interface IBlog extends Document {
 const BlogSchema = new Schema<IBlog>({
     title: { type: String },
     content: { type: String },
-    authorId: { type: String, ref: UserModel },
+    authorId: { type: Schema.Types.ObjectId, ref: UserModel },
     tags: { type: [String] },
     likes: { type: Number },
     imageUrl: { type: String },

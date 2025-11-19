@@ -1,17 +1,17 @@
-import { Schema, model, Document } from "mongoose";
+import mongoose, { Schema, model, Document } from "mongoose";
 import { UserModel } from "./user.js";
 import { BlogModel } from "./blog.js";
 
 interface IComment extends Document {
-    userId: string,
-    blogId: string,
+    userId: mongoose.Types.ObjectId,
+    blogId: mongoose.Types.ObjectId,
     comment: string,
     commentStatus: number,
 }
 
 const CommentShema = new Schema<IComment>({
-    userId: { type: String, ref: UserModel },
-    blogId: { type: String, ref: BlogModel },
+    userId: { type: Schema.Types.ObjectId, ref: UserModel },
+    blogId: { type: Schema.Types.ObjectId, ref: BlogModel },
     comment: { type: String },
     commentStatus: { type: Number },
 },

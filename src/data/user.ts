@@ -67,11 +67,37 @@ class UserData {
             { upsert: true }
         )
     };
+
     static async getUserByAuthorId(authorId: string) {
         const user = await UserModel.findById(
             { _id: authorId }
         )
         return user;
+    }
+
+    static async getUserBlogs(userId: string) {
+        const userBlogs = await UserModel.aggregate([
+            {
+                $match: { _id: new mongoose.Types.ObjectId(userId) }
+            },
+            {
+                $lookup: {
+                    from: "blogs",
+                    localField: "_id",
+                    foreignField: "authorId",
+                    as: "blogs"
+                }
+            },
+            {
+                $addFields: {
+                    totalBlogs: { $size: "$blogs" }
+                }
+            },
+
+        ])
+        console.log('blogs', userBlogs);
+
+        return userBlogs;
     }
 
 }

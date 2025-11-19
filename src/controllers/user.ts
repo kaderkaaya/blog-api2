@@ -67,5 +67,16 @@ class UserController {
         }
     };
 
+    static async getBlogs(req: Request, res: Response): Promise<void> {
+        try {
+            const { userId } = req.query;
+            const userBlogs = await UserService.getBlogs(userId as string);
+            ResponseHelper.success(res, { userBlogs }, 200)
+        } catch (error: any) {
+            ResponseHelper.sendError(res, error.message, 500)
+        }
+    };
+    
+
 }
 export default UserController;

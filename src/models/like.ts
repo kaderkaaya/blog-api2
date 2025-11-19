@@ -1,15 +1,15 @@
-import { Schema, model, Document } from "mongoose";
+import mongoose, { Schema, model, Document,Types } from "mongoose";
 import { BlogModel } from "./blog.js";
 import { UserModel } from "./user.js";
 
 interface ILike extends Document {
-    userId: string,
-    blogId: string,
+    userId: Types.ObjectId,
+    blogId: Types.ObjectId,
 }
 
 const LikeSchema = new Schema<ILike>({
-    userId: { type: String, ref: UserModel },
-    blogId: { type: String, ref: BlogModel }
+    userId: { type: Schema.Types.ObjectId, ref: UserModel },
+    blogId: { type: Schema.Types.ObjectId, ref: BlogModel }
 },
     { timestamps: true })
 

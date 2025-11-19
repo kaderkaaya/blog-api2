@@ -1,12 +1,12 @@
-import { Schema, model, Document } from "mongoose";
+import { Schema, model, Document,Types, SchemaType } from "mongoose";
 
 interface IToken extends Document {
-    userId: string,
+    userId: Types.ObjectId,
     token: string,
 }
 
 const TokenSchema = new Schema<IToken>({
-    userId: { type: String },
+    userId: { type: Schema.Types.ObjectId },
     token: { type: String },
 },
     { timestamps: true });

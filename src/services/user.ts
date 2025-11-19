@@ -7,6 +7,7 @@ import TokenService from "./token.js";
 import ERROR_CODES from "../utils/error.js";
 import ApiError from "../helpers/apiError.js";
 import USER_ROLES from "../utils/constant.js";
+import BlogData from "../data/blog.js";
 
 class UserService {
     static async register(name: string, mail: string, phoneNumber: string, password: string, role: string) {
@@ -124,6 +125,7 @@ class UserService {
         const updatedUser = await UserData.updateUser(userId, name, mail, phoneNumber)
         return { user: updatedUser };
     };
+
     static async logOut(userId: string) {
         const user = await UserData.getUserById(userId);
         const userToken = await TokenService.getUserToken(userId);
@@ -133,6 +135,19 @@ class UserService {
         await TokenService.logOutUser(userId);
         return user;
     };
+
+    static async getBlogs(userId: string) {
+        const user = await UserData.getUserById(userId);
+        if (!user) {
+            throw new ApiError(ERROR_CODES.USER_ERROR.message, ERROR_CODES.USER_ERROR.statusCode);
+        }
+        if (user.role === USER_ROLES.ROLES.READER) {
+            throw new ApiError(ERROR_CODES.ROLE_ERROR.message, ERROR_CODES.ROLE_ERROR.statusCode);
+        }
+        const userBlogs = await UserData.getUserBlogs(userId);
+        return userBlogs;
+
+    }
 
 }
 export default UserService;

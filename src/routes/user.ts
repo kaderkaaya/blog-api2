@@ -31,6 +31,10 @@ router.post("/log-out",
     SchemaHelper.validateSchemaBody(UserSchema.logOut),
     (UserController.logOut));
 
+router.get("/get-blogs",
+    SchemaHelper.validateSchemaQuery(UserSchema.getBlogs),
+    (UserController.getBlogs));
+
 
 
 export default router;

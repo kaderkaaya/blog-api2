@@ -33,11 +33,16 @@ export const logOut = z.object({
     userId: z.string(),
 });
 
+export const getBlogs = z.object({
+    userId: z.string(),
+});
+
 export default {
     register,
     login,
     verifyCode,
     getself,
     update,
-    logOut
+    logOut,
+    getBlogs,
 }
