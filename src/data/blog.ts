@@ -128,5 +128,12 @@ class BlogData {
         ]);
         return blogWithUser
     }
+
+    static async getBlogWithId(blogid: string) {
+        const blog = await BlogModel.findById({
+            _id: blogid
+        });
+        return blog;
+    }
 }
 export default BlogData;

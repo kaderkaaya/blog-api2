@@ -1,3 +1,4 @@
+import mongoose from "mongoose";
 import CommentModel from "../models/comment.js";
 import COMMENT from "../utils/constant.js"
 class CommentData {
@@ -26,6 +27,7 @@ class CommentData {
         );
         return updatedComment;
     };
+
     static async updateComment(commentId: string, comment: string) {
         const updatedFields: Partial<{
             comment: string
@@ -39,6 +41,47 @@ class CommentData {
             { new: true },
         );
         return updatedComment;
+    };
+
+    static async getComments(userId: string, blogId: string) {
+        const comments = await CommentModel.find({
+            userId,
+            blogId,
+            commentStatus: COMMENT.COMMENT_STATUS.ACTIVE,
+        });
+        return comments;
+    };
+
+    static async getAllComments(userId: string) {
+        const comments = await CommentModel.find({
+            userId,
+            commentStatus: COMMENT.COMMENT_STATUS.ACTIVE,
+        });
+        return comments;
+    };
+
+    static async getCommentWithBlog(commentId: string, blogId: string) {
+        const commentObjId = new mongoose.Types.ObjectId(commentId);
+        const comment = await CommentModel.aggregate([
+            {
+                $match: { _id: commentObjId }
+            },
+            {
+                $lookup: {
+                    from: "blogs",
+                    let: { blogObjId: { $toObjectId: "$blogId" } },
+                    pipeline: [
+                        {
+                            $match:
+                                { $expr: { $eq: ["$_id", "$$blogObjId"] } }
+                        }
+                    ],
+                    as: "blog",
+                }
+            },
+            { $unwind: "$blog" }
+        ]);
+        return comment;
     }
 
 }

@@ -46,8 +46,40 @@ class CommentService {
         }
         const updatedComment = await CommentData.updateComment(commentId, comment);
         return updatedComment;
+    };
 
+    static async getComments(userId: string, blogId: string) {
+        if (blogId) {
+            const comments = await CommentData.getComments(userId, blogId);
+            const blogWithComments = await Promise.all(comments.map(async comment => {
+                const blogid = comment.blogId;
+                const blog = await BlogData.getBlogWithId(blogid);
+                return {
+                    ...comment.toJSON(),
+                    blog
+                }
+
+            }))
+            return blogWithComments;
+        }
+        const comments = await CommentData.getAllComments(userId);
+        const blogWithComments = await Promise.all(comments.map(async comment => {
+            const blogid = comment.blogId;
+            const blog = await BlogData.getBlogWithId(blogid);
+            return {
+                ...comment.toJSON(),
+                blog
+            }
+
+        }))
+        return blogWithComments;
     }
+
+    static async getCommentWithBlog(commentId: string, blogId: string) {
+        const comment = await CommentData.getCommentWithBlog(commentId, blogId);
+        return comment;
+    }
+
 
 
 }

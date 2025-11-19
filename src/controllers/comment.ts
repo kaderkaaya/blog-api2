@@ -37,10 +37,13 @@ class CommentController {
 
     static async getComments(req: Request, res: Response): Promise<void> {
         try {
-            const { userId, blogId } = req.body;
-
-            // const comments = await CommentService.getComments(userId, blogId,);
-            // ResponseHelper.success(res, { comments }, 200)
+            const { userId, blogId } = req.query;
+            if (typeof userId !== "string") {
+                ResponseHelper.sendError(res, 'userId is required', 500)
+                return;
+            }
+            const comments = await CommentService.getComments(userId, blogId as string);
+            ResponseHelper.success(res, { comments }, 200)
         } catch (error: any) {
             ResponseHelper.sendError(res, error.message, 500)
         }
@@ -48,10 +51,10 @@ class CommentController {
 
     static async getCommentWithBlog(req: Request, res: Response): Promise<void> {
         try {
-            const { commentId, blogId } = req.body;
+            const { commentId, blogId } = req.query;
 
-            // const comment = await CommentService.getCommentWithBlog(commentId, blogId,);
-            // ResponseHelper.success(res, { comment }, 200)
+            const comment = await CommentService.getCommentWithBlog(commentId as string, blogId as string);
+            ResponseHelper.success(res, { comment }, 200)
         } catch (error: any) {
             ResponseHelper.sendError(res, error.message, 500)
         }
