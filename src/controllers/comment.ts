@@ -27,10 +27,10 @@ class CommentController {
 
     static async updateCommentStatus(req: Request, res: Response): Promise<void> {
         try {
-            const { userId, commentId } = req.body;
+            const { commentId, blogId, userId } = req.body;
 
-            // const comment = await CommentService.updateCommentStatus(userId, commentId);
-            // ResponseHelper.success(res, { comment }, 200)
+            const comment = await CommentService.updateCommentStatus(commentId, blogId, userId);
+            ResponseHelper.success(res, { comment }, 200)
         } catch (error: any) {
             ResponseHelper.sendError(res, error.message, 500)
         }

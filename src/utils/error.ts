@@ -52,4 +52,8 @@ export default {
         statusCode: 111,
         message: 'You Dont have this action'
     },
+    COMMENT_ERROR: {
+        statusCode: 112,
+        message: 'this comment doesnt exist.'
+    },
 }

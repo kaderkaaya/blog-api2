@@ -1,7 +1,8 @@
+import mongoose from "mongoose";
 import { UserModel } from "../models/user.js";
 
 class UserData {
-    static async register(name: string, mail: string, phoneNumber: string, hashPass: string, userC: string, role:string) {
+    static async register(name: string, mail: string, phoneNumber: string, hashPass: string, userC: string, role: string) {
         return await UserModel.create({
             name,
             mail,
@@ -29,8 +30,9 @@ class UserData {
     }
 
     static async getUserById(userId: string) {
+        const userObjId = new mongoose.Types.ObjectId(userId);
         const user = await UserModel.findById({
-            _id: userId
+            _id: userObjId
         });
         return user;
     };
@@ -64,11 +66,11 @@ class UserData {
             { upsert: true }
         )
     };
-    static async getUserByAuthorId(authorId:string){
-       const user =  await UserModel.findById(
-            {_id:authorId}
+    static async getUserByAuthorId(authorId: string) {
+        const user = await UserModel.findById(
+            { _id: authorId }
         )
-        return user ;
+        return user;
     }
 
 }

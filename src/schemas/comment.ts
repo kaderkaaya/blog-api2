@@ -9,6 +9,7 @@ export const createComment = z.object({
 export const updateCommentStatus = z.object({
     commentId: z.string(),
     blogId: z.string(),
+    userId: z.string(),
 });
 
 export const updateComment = z.object({
