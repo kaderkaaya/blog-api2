@@ -7,6 +7,7 @@ import connectDB from './config/conf.js';
 import UserRouter from "./routes/user.js";
 import ErrorHandler from "./helpers/errorHandler.js";
 import BlogRouter from "./routes/blog.js";
+import CommentRouter from "./routes/comment.js"
 
 app.use(express.json());
 //DB
@@ -16,6 +17,7 @@ app.use(ErrorHandler);
 //ROUTES
 app.use("/user",UserRouter);
 app.use("/blog",BlogRouter);
+app.use("/comment",CommentRouter);
 //PORT
 app.listen(PORT!, ()=>{
     console.log(`*****************->PORT:${PORT}`);

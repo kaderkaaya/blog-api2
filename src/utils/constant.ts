@@ -7,5 +7,9 @@ export default {
         WRITER: 0,
         READER: 1,
         ADMIN: 2
+    },
+    COMMENT_STATUS: {
+        ACTIVE: 1,
+        PASSIVE: 0,
     }
 }

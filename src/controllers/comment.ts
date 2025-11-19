@@ -7,8 +7,8 @@ class CommentController {
         try {
             const { userId, comment, blogId } = req.body;
 
-            // const createdComment = await CommentService.createComment(userId, comment, blogId,);
-            // ResponseHelper.success(res, { createdComment }, 200)
+            const createdComment = await CommentService.createComment(userId, comment, blogId);
+            ResponseHelper.success(res, { createdComment }, 200)
         } catch (error: any) {
             ResponseHelper.sendError(res, error.message, 500)
         }
