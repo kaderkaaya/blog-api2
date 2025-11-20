@@ -5,6 +5,8 @@ import USER_ROLES from "../utils/constant.js";
 import BlogData from "../data/blog.js";
 import TokenService from "./token.js";
 import CommentData from "../data/comment.js";
+import LikeData from "../data/like.js";
+import mongoose from "mongoose";
 
 class BlogService {
 
@@ -93,14 +95,22 @@ class BlogService {
         const uToken: string = token;
         const userToken = await TokenService.verifyToken(uToken);
         const blogs = await BlogData.getBlogs();
+        const blgs = await Promise.all(blogs.map(async blog => {
+            const blogId = blog._id as mongoose.Types.ObjectId;
+            const totalLikes = await LikeData.getTotalLikes(blogId);
+            return {
+                ...blog.toJSON(),
+                totalLikes
+            }
+        }))
         if (userToken.role === 'reader') {
-            return blogs.filter(blog =>
+            return blgs.filter(blog =>
                 blog.isPublished === true)
         }
         if (userToken.role === 'writer') {
-            return blogs.filter(blog => blog.authorId === userToken.userId)
+            return blgs.filter(blog => blog.authorId === userToken.userId)
         }
-        return blogs;
+        return blgs;
 
     }
 

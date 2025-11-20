@@ -41,7 +41,7 @@ class LikeData {
             }
         ).sort({ createdAt: -1 });
         return like;
-    }
+    };
 
     static async getLikes(userId: string) {
         const userObjId = new mongoose.Types.ObjectId(userId);
@@ -52,6 +52,14 @@ class LikeData {
             }
         );
         return likes;
+    };
+    static async getTotalLikes(blogId: object) {
+        const totalLikes = await LikeModel.aggregate([
+            { $match: { blogId: blogId } },
+            { $count: 'totalLikes' },
+        ]);
+        return totalLikes[0];
+
     }
 
 }
