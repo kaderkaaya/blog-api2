@@ -100,34 +100,34 @@ class BlogService {
         if (userToken.role === 'writer') {
             return blogs.filter(blog => blog.authorId === userToken.userId)
         }
-        return blogs 
+        return blogs;
 
     }
 
     static async getBlog(token: string, blogId: string) {
-        // const uToken: string = token;
-        // const userToken = await TokenService.verifyToken(uToken);
-        // const userId: string = userToken.userId;
-        const blog = await BlogData.getUserWithBlog(blogId)
+        const blog = await BlogData.getUserWithBlog(blogId);
+        if (!blog) {
+            throw new ApiError(ERROR_CODES.BLOG_ERROR.message, ERROR_CODES.BLOG_ERROR.statusCode)
+        }
         return blog;
     }
 
-    static async getBlogWithComments(userId:string){
-      const user = await UserData.getUserByAuthorId(userId);
+    static async getBlogWithComments(userId: string) {
+        const user = await UserData.getUserByAuthorId(userId);
         if (!user) {
             throw new ApiError(ERROR_CODES.USER_ERROR.message, ERROR_CODES.USER_ERROR.statusCode);
         }
         const blogs = await BlogData.getBlogs();
-       const blogWithComments = await Promise.all(blogs.map( async blog=>{
-        const blogId = blog._id;
-        const comments = await CommentData.getComments(userId, blogId as string);
-        return {
-            ...blog.toJSON(),
-            comments
-        }
-       }))
-       return blogWithComments
-        
+        const blogWithComments = await Promise.all(blogs.map(async blog => {
+            const blogId = blog._id;
+            const comments = await CommentData.getComments(userId, blogId as string);
+            return {
+                ...blog.toJSON(),
+                comments,
+            }
+        }))
+        return blogWithComments;
+
     }
 }
 export default BlogService;

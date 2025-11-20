@@ -26,11 +26,7 @@ class UserController {
     static async getself(req: Request, res: Response): Promise<void> {
         try {
             const { userId } = req.query;
-            if (typeof userId !== "string") {
-                ResponseHelper.sendError(res, 'userId is required', 500)
-                return;
-            }
-            const user = await UserService.getself(userId);
+            const user = await UserService.getself(userId as string);
             ResponseHelper.success(res, { user }, 200)
         } catch (error: any) {
             ResponseHelper.sendError(res, error.message, 500)

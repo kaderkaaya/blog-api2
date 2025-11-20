@@ -3,6 +3,7 @@ import BlogService from "../services/blog.js";
 import ResponseHelper from "../helpers/responseHelper.js";
 import multer from "multer";
 import { v2 as cloudinary } from 'cloudinary';
+import ERROR_CODES from "../utils/error.js";
 
 class BlogController {
 
@@ -85,7 +86,7 @@ class BlogController {
         try {
             const { token } = req.query;
             if (typeof token !== "string") {
-                ResponseHelper.sendError(res, 'token is required', 500);
+                ResponseHelper.sendError(res, ERROR_CODES.TOKEN_ERROR.message, ERROR_CODES.TOKEN_ERROR.statusCode);
                 return;
             }
             const blogs = await BlogService.getBlogs(token);
@@ -99,14 +100,10 @@ class BlogController {
         try {
             const { token, blogId } = req.query;
             if (typeof token !== "string") {
-                ResponseHelper.sendError(res, 'token is required', 500);
+               ResponseHelper.sendError(res, ERROR_CODES.TOKEN_ERROR.message, ERROR_CODES.TOKEN_ERROR.statusCode);
                 return;
             }
-            if (typeof blogId !== "string") {
-                ResponseHelper.sendError(res, 'blogId is required', 500);
-                return;
-            }
-            const blog = await BlogService.getBlog(token, blogId);
+            const blog = await BlogService.getBlog(token, blogId as string);
             ResponseHelper.success(res, { blog }, 200)
         } catch (error: any) {
             ResponseHelper.sendError(res, error.message, 500)

@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose, { mongo } from "mongoose";
 import CommentModel from "../models/comment.js";
 import COMMENT from "../utils/constant.js"
 class CommentData {
@@ -13,8 +13,9 @@ class CommentData {
     };
 
     static async getComment(commentId: string) {
+        const commentObjId = new mongoose.Types.ObjectId(commentId)
         const existingComment = await CommentModel.findById({
-            _id: commentId
+            _id: commentObjId
         });
         return existingComment;
     };

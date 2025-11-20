@@ -38,11 +38,7 @@ class CommentController {
     static async getComments(req: Request, res: Response): Promise<void> {
         try {
             const { userId, blogId } = req.query;
-            if (typeof userId !== "string") {
-                ResponseHelper.sendError(res, 'userId is required', 500)
-                return;
-            }
-            const comments = await CommentService.getComments(userId, blogId as string);
+            const comments = await CommentService.getComments(userId as string, blogId as string);
             ResponseHelper.success(res, { comments }, 200)
         } catch (error: any) {
             ResponseHelper.sendError(res, error.message, 500)
