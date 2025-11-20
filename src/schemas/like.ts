@@ -6,9 +6,13 @@ export const likeBlog = z.object({
 });
 
 export const unlikeBlog = z.object({
-   userId: z.string(),
-   blogId: z.string(),
-   likeId: z.string(),
+    userId: z.string(),
+    blogId: z.string(),
+    likeId: z.string(),
+});
+
+export const getLikedPosts = z.object({
+    userId: z.string(),
 });
 
 
@@ -16,4 +20,5 @@ export const unlikeBlog = z.object({
 export default {
     likeBlog,
     unlikeBlog,
+    getLikedPosts
 }

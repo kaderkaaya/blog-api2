@@ -24,5 +24,15 @@ class LikeController {
             ResponseHelper.sendError(res, error.message, 500)
         }
     };
+
+    static async getLikedPosts(req: Request, res: Response): Promise<void> {
+        try {
+            const { userId } = req.query;
+            const posts = await LikeService.getLikedPosts(userId as string);
+            ResponseHelper.success(res, { posts }, 200)
+        } catch (error: any) {
+            ResponseHelper.sendError(res, error.message, 500)
+        }
+    };
 }
 export default LikeController;

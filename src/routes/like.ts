@@ -10,5 +10,8 @@ router.post("/like-blog",
 router.post("/unlike-blog",
     SchemaHelper.validateSchemaBody(LikeSchema.unlikeBlog),
     (LikeController.unlikeBlog));
+router.get("/liked-posts",
+    SchemaHelper.validateSchemaQuery(LikeSchema.getLikedPosts),
+    (LikeController.getLikedPosts));
 
 export default router;

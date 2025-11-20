@@ -43,5 +43,16 @@ class LikeData {
         return like;
     }
 
+    static async getLikes(userId: string) {
+        const userObjId = new mongoose.Types.ObjectId(userId);
+        const likes = await LikeModel.find(
+            {
+                userId: userObjId,
+                likeStatus: LIKE.LIKE_STATUS.LIKE,
+            }
+        );
+        return likes;
+    }
+
 }
 export default LikeData;
