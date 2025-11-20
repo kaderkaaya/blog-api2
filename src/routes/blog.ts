@@ -3,6 +3,8 @@ const router = express.Router();
 import BlogController from "../controllers/blog.js";
 import BlogSchema from "../schemas/blog.js";
 import SchemaHelper from "../helpers/schemaHelper.js";
+import ROLE from "../utils/constant.js";
+import { authorize } from "../helpers/role.js";
 
 router.post("/create-blog",
     SchemaHelper.validateSchemaBody(BlogSchema.createBlog),
@@ -20,6 +22,7 @@ router.post("/upload-blog-image",
     SchemaHelper.validateSchemaBody(BlogSchema.uploadBlogImage),
     (BlogController.uploadBlogImage));
 router.get("/get-blogs",
+    authorize(ROLE.JWT_ROLES.WRITER),
     SchemaHelper.validateSchemaQuery(BlogSchema.getBlogs),
     (BlogController.getBlogs));
 router.get("/get-blog",

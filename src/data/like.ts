@@ -58,7 +58,7 @@ class LikeData {
             { $match: { blogId: blogId } },
             { $count: 'totalLikes' },
         ]);
-        return totalLikes[0];
+        return totalLikes;
 
     }
 

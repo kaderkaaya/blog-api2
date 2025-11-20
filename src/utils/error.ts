@@ -64,4 +64,8 @@ export default {
         statusCode: 114,
         message: 'this like exist.'
     },
+    AUTH_ERROR: {
+        statusCode: 403,
+        message: 'auth error'
+    },
 }

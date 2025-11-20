@@ -15,5 +15,10 @@ export default {
     LIKE_STATUS: {
         LIKE: 1,
         UNLIKE: 0,
-    }
+    },
+    JWT_ROLES: {
+        WRITER: 'writer',
+        READER: 'reader',
+        ADMIN: 'admin'
+    },
 }
