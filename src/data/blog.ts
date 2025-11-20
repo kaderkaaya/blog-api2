@@ -129,7 +129,7 @@ class BlogData {
         return blogWithUser
     }
 
-    static async getBlogWithId(blogid: string) {
+    static async getBlogWithId(blogid: object) {
         const blog = await BlogModel.findById({
             _id: blogid
         });

@@ -8,6 +8,7 @@ import UserRouter from "./routes/user.js";
 import ErrorHandler from "./helpers/errorHandler.js";
 import BlogRouter from "./routes/blog.js";
 import CommentRouter from "./routes/comment.js"
+import LikeRouter from "./routes/like.js";
 
 app.use(express.json());
 //DB
@@ -18,6 +19,7 @@ app.use(ErrorHandler);
 app.use("/user",UserRouter);
 app.use("/blog",BlogRouter);
 app.use("/comment",CommentRouter);
+app.use("/like",LikeRouter);
 //PORT
 app.listen(PORT!, ()=>{
     console.log(`*****************->PORT:${PORT}`);

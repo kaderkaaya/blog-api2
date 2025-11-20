@@ -11,5 +11,9 @@ export default {
     COMMENT_STATUS: {
         ACTIVE: 1,
         PASSIVE: 0,
+    },
+    LIKE_STATUS: {
+        LIKE: 1,
+        UNLIKE: 0,
     }
 }

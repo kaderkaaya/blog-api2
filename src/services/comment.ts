@@ -3,6 +3,7 @@ import ERROR_CODES from "../utils/error.js";
 import ApiError from "../helpers/apiError.js";
 import BlogData from "../data/blog.js";
 import CommentData from "../data/comment.js";
+import mongoose from "mongoose";
 
 class CommentService {
     static async createComment(userId: string, comment: string, blogId: string) {
@@ -52,7 +53,7 @@ class CommentService {
         if (blogId) {
             const comments = await CommentData.getComments(userId, blogId);
             const blogWithComments = await Promise.all(comments.map(async comment => {
-                const blogid = comment.blogId;
+                const blogid: mongoose.Types.ObjectId = comment.blogId;
                 const blog = await BlogData.getBlogWithId(blogid);
                 return {
                     ...comment.toJSON(),

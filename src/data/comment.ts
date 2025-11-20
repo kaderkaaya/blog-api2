@@ -44,17 +44,22 @@ class CommentData {
     };
 
     static async getComments(userId: string, blogId: string) {
+        const blogObjId = new mongoose.Types.ObjectId(blogId);
+        const userObjId = new mongoose.Types.ObjectId(userId);
         const comments = await CommentModel.find({
-            userId,
-            blogId,
+            userId: userObjId,
+            blogId: blogObjId,
             commentStatus: COMMENT.COMMENT_STATUS.ACTIVE,
         });
+
         return comments;
     };
 
     static async getAllComments(userId: string) {
+        const userObjId = new mongoose.Types.ObjectId(userId);
+
         const comments = await CommentModel.find({
-            userId,
+            userId: userObjId,
             commentStatus: COMMENT.COMMENT_STATUS.ACTIVE,
         });
         return comments;

@@ -7,8 +7,8 @@ class LikeController {
         try {
             const { userId, blogId } = req.body;
 
-            const blog = await LikeService.likeBlog(userId, blogId);
-            ResponseHelper.success(res, { blog }, 200)
+            const like = await LikeService.likeBlog(userId, blogId);
+            ResponseHelper.success(res, { like }, 200)
         } catch (error: any) {
             ResponseHelper.sendError(res, error.message, 500)
         }
@@ -16,10 +16,10 @@ class LikeController {
 
     static async unlikeBlog(req: Request, res: Response): Promise<void> {
         try {
-            const { userId, blogId } = req.body;
+            const { userId, blogId, likeId } = req.body;
 
-            const blog = await LikeService.unlikeBlog(userId, blogId);
-            ResponseHelper.success(res, { blog }, 200)
+            const like = await LikeService.unlikeBlog(userId, blogId, likeId);
+            ResponseHelper.success(res, { like }, 200)
         } catch (error: any) {
             ResponseHelper.sendError(res, error.message, 500)
         }

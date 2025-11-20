@@ -8,6 +8,7 @@ export const likeBlog = z.object({
 export const unlikeBlog = z.object({
    userId: z.string(),
    blogId: z.string(),
+   likeId: z.string(),
 });
 
 

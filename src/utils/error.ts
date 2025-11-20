@@ -56,4 +56,12 @@ export default {
         statusCode: 112,
         message: 'this comment doesnt exist.'
     },
+    LIKE_ERROR: {
+        statusCode: 113,
+        message: 'this like doesnt exist.'
+    },
+    LIKE_AGAIN_ERROR: {
+        statusCode: 114,
+        message: 'this like exist.'
+    },
 }
