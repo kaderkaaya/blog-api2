@@ -74,5 +74,17 @@ class UserController {
     };
     
 
+        static async getUsers(req: Request, res: Response): Promise<void> {
+        try {
+            const { token } = req.query;
+            const users = await UserService.getUsers(token as string);
+            ResponseHelper.success(res, { users }, 200)
+        } catch (error: any) {
+            ResponseHelper.sendError(res, error.message, 500)
+        }
+    };
+    
+    
+
 }
 export default UserController;

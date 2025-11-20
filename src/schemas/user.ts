@@ -5,7 +5,7 @@ export const register = z.object({
     mail: z.string(),
     phoneNumber: z.string(),
     password: z.string(),
-    role:z.number()
+    role: z.number()
 });
 
 export const login = z.object({
@@ -37,6 +37,9 @@ export const getBlogs = z.object({
     userId: z.string(),
 });
 
+export const getUsers = z.object({
+    token: z.string(),
+})
 export default {
     register,
     login,
@@ -45,4 +48,5 @@ export default {
     update,
     logOut,
     getBlogs,
+    getUsers,
 }

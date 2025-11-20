@@ -4,6 +4,9 @@ import UserController from "../controllers/user.js";
 import UserSchema from "../schemas/user.js";
 import SchemaHelper from "../helpers/schemaHelper.js";
 import authLimiter from "../helpers/limiter.js";
+import { authorize } from "../helpers/role.js";
+import { authenticate } from "../helpers/auth.js";
+import ROLE from "../utils/constant.js";
 
 router.post("/register",
     authLimiter,
@@ -35,6 +38,10 @@ router.get("/get-blogs",
     SchemaHelper.validateSchemaQuery(UserSchema.getBlogs),
     (UserController.getBlogs));
 
-
+router.get("/get-users",
+    authenticate,
+    authorize(ROLE.JWT_ROLES.WRITER),
+    SchemaHelper.validateSchemaQuery(UserSchema.getUsers),
+    (UserController.getUsers));
 
 export default router;

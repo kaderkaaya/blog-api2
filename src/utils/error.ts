@@ -25,8 +25,8 @@ export default {
         message: 'Invalid User'
     },
     TOKEN_ERROR: {
-        statusCode: 106,
-        message: 'Token Error'
+        statusCode: 401,
+        message: 'invalid token'
     },
     VERIFY_ERROR: {
         statusCode: 107,

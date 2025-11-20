@@ -100,5 +100,13 @@ class UserData {
         return userBlogs;
     }
 
+    static async getUsers(){
+        const users = await UserModel.find({
+            verifyCode:true,
+            status:1
+        })
+        return users;
+    }
+
 }
 export default UserData;
