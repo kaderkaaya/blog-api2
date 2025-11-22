@@ -84,7 +84,7 @@ class BlogController {
 
     static async getBlogs(req: Request, res: Response): Promise<void> {
         try {
-            const { token, page, limit, search } = req.query;
+            const { token, page, limit, search, tags } = req.query;
             if (typeof token !== "string") {
                 ResponseHelper.sendError(res, ERROR_CODES.TOKEN_ERROR.message, ERROR_CODES.TOKEN_ERROR.statusCode);
                 return;
@@ -93,7 +93,7 @@ class BlogController {
                 ResponseHelper.sendError(res, ERROR_CODES.TOKEN_ERROR.message, ERROR_CODES.TOKEN_ERROR.statusCode);
                 return;
             }
-            const blogs = await BlogService.getBlogs(token, page as any, limit as any, search as string);
+            const blogs = await BlogService.getBlogs(token, page as any, limit as any, search as string, tags as string);
             ResponseHelper.success(res, { blogs }, 200)
         } catch (error: any) {
             ResponseHelper.sendError(res, error.message, 500)

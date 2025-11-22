@@ -91,10 +91,10 @@ class BlogService {
         return blog;
     };
 
-    static async getBlogs(token: string, page: number, limit: number, search: string) {
+    static async getBlogs(token: string, page: number, limit: number, search: string, tags: string) {
         const uToken: string = token;
         const userToken = await TokenService.verifyToken(uToken);
-        const blogs = await BlogData.getBlogs(page, limit, search);
+        const blogs = await BlogData.getBlogs(page, limit, search, tags);
         const blgs = await Promise.all(blogs.map(async blog => {
             const blogId = blog._id as mongoose.Types.ObjectId;
             const totalLikes = await LikeData.getTotalLikes(blogId);

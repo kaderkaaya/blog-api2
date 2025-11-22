@@ -99,9 +99,17 @@ class BlogData {
         return blog
     };
 
-    static async getBlogs(page: number, limit: number, search: string) {
+    static async getBlogs(page: number, limit: number, search: string, tags: string) {
         const offset = (page - 1) * limit;
-        const blogs = await BlogModel.find({ title: { $regex: search, $options: "i" } })
+        const filterOrSearch: any = {};
+        if (tags) {
+            const tagsArray = tags.split(',');
+            filterOrSearch.tags = { $in: tagsArray };
+        }
+        if (search) {
+            filterOrSearch.title = { $regex: search, $options: "i" };
+        }
+        const blogs = await BlogModel.find(filterOrSearch)
             .skip(offset)
             .limit(limit)
 
