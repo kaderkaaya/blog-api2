@@ -47,7 +47,7 @@ class UserController {
         try {
             const { userId, name, mail, phoneNumber } = req.body;
             const user = await UserService.update(userId, name, mail, phoneNumber);
-            ResponseHelper.success(res, { user }, 201)
+            ResponseHelper.success(res, user, 201)
         } catch (error: any) {
             ResponseHelper.sendError(res, error.message, 500)
         }
@@ -72,9 +72,9 @@ class UserController {
             ResponseHelper.sendError(res, error.message, 500)
         }
     };
-    
 
-        static async getUsers(req: Request, res: Response): Promise<void> {
+
+    static async getUsers(req: Request, res: Response): Promise<void> {
         try {
             const { token } = req.query;
             const users = await UserService.getUsers(token as string);
@@ -83,8 +83,8 @@ class UserController {
             ResponseHelper.sendError(res, error.message, 500)
         }
     };
-    
-    
+
+
 
 }
 export default UserController;

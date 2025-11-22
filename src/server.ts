@@ -9,19 +9,22 @@ import ErrorHandler from "./helpers/errorHandler.js";
 import BlogRouter from "./routes/blog.js";
 import CommentRouter from "./routes/comment.js"
 import LikeRouter from "./routes/like.js";
+import applySecurity from "./middleware/security.js";
 
 app.use(express.json());
+//SECURITY
+applySecurity(app);
 //DB
 connectDB();
 //ERROR_HANDLER
 app.use(ErrorHandler);
 //ROUTES
-app.use("/user",UserRouter);
-app.use("/blog",BlogRouter);
-app.use("/comment",CommentRouter);
-app.use("/like",LikeRouter);
+app.use("/user", UserRouter);
+app.use("/blog", BlogRouter);
+app.use("/comment", CommentRouter);
+app.use("/like", LikeRouter);
 //PORT
-app.listen(PORT!, ()=>{
+app.listen(PORT!, () => {
     console.log(`*****************->PORT:${PORT}`);
-    
+
 });

@@ -7,12 +7,12 @@ import TokenService from "./token.js";
 import ERROR_CODES from "../utils/error.js";
 import ApiError from "../helpers/apiError.js";
 import USER_ROLES from "../utils/constant.js";
-import BlogData from "../data/blog.js";
+import LogHelper from "../helpers/logHelper.js";
 
 class UserService {
     static async register(name: string, mail: string, phoneNumber: string, password: string, role: string) {
         const user = await UserData.getUser(mail, phoneNumber);
-        if (user) {
+        if (!user) {
             throw new ApiError(ERROR_CODES.EXISTING_USER.message, ERROR_CODES.EXISTING_USER.statusCode);
         }
         const regexPass = zxcvbn(password);
@@ -27,7 +27,11 @@ class UserService {
 
     static async login(phoneNumber: string, password: string) {
         const user = await UserData.getUserByNumber(phoneNumber);
+        const userId = user?._id as string;
+        const userid = user?._id as object
+
         if (!user) {
+            LogHelper.logError('Invalid User', userid, 'error,', ERROR_CODES.USER_ERROR.message)
             throw new ApiError(ERROR_CODES.USER_ERROR.message, ERROR_CODES.USER_ERROR.statusCode);
 
         }
@@ -41,7 +45,7 @@ class UserService {
             throw new ApiError(ERROR_CODES.PASS_ERROR.message, ERROR_CODES.PASS_ERROR.statusCode);
 
         }
-        const userId = user._id as string;
+
         const userRole = user.role;
         let role: string;
         switch (userRole) {
@@ -149,8 +153,8 @@ class UserService {
 
     }
 
-    static async getUsers(token: string){
-       return await UserData.getUsers()
+    static async getUsers(token: string) {
+        return await UserData.getUsers()
     }
 
 }

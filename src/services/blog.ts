@@ -94,7 +94,6 @@ class BlogService {
     static async getBlogs(token: string) {
         const uToken: string = token;
         const userToken = await TokenService.verifyToken(uToken);
-        console.log('userToken',userToken);
         const blogs = await BlogData.getBlogs();
         const blgs = await Promise.all(blogs.map(async blog => {
             const blogId = blog._id as mongoose.Types.ObjectId;

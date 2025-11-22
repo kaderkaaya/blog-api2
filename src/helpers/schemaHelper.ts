@@ -4,8 +4,7 @@ class schemaHelper {
         return async (req: Request, res: Response, next: NextFunction) => {
             try {
                 const result = await schema.safeParseAsync(req.body);
-                req.body = result.data;
-                
+                Object.assign(req.body, result.data);
                 next();
             } catch (error) {
                 res.status(400).send({ success: false, error: `${error}`, statusCode: 400 })
@@ -27,7 +26,7 @@ class schemaHelper {
             }
         }
     };
-    
+
 }
 
 export default schemaHelper;
