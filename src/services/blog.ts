@@ -91,10 +91,10 @@ class BlogService {
         return blog;
     };
 
-    static async getBlogs(token: string) {
+    static async getBlogs(token: string, page: number, limit: number, search: string) {
         const uToken: string = token;
         const userToken = await TokenService.verifyToken(uToken);
-        const blogs = await BlogData.getBlogs();
+        const blogs = await BlogData.getBlogs(page, limit, search);
         const blgs = await Promise.all(blogs.map(async blog => {
             const blogId = blog._id as mongoose.Types.ObjectId;
             const totalLikes = await LikeData.getTotalLikes(blogId);
@@ -127,7 +127,7 @@ class BlogService {
         if (!user) {
             throw new ApiError(ERROR_CODES.USER_ERROR.message, ERROR_CODES.USER_ERROR.statusCode);
         }
-        const blogs = await BlogData.getBlogs();
+        const blogs = await BlogData.getBlogss();
         const blogWithComments = await Promise.all(blogs.map(async blog => {
             const blogId = blog._id;
             const comments = await CommentData.getComments(userId, blogId as string);

@@ -99,10 +99,20 @@ class BlogData {
         return blog
     };
 
-    static async getBlogs() {
+    static async getBlogs(page: number, limit: number, search: string) {
+        const offset = (page - 1) * limit;
+        const blogs = await BlogModel.find({ title: { $regex: search, $options: "i" } })
+            .skip(offset)
+            .limit(limit)
+
+        return blogs;
+    };
+
+    static async getBlogss() {
         const blogs = await BlogModel.find()
         return blogs;
     };
+
 
     static async getUserWithBlog(blogId: string) {
         const blogWithUser = await BlogModel.aggregate([

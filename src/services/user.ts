@@ -153,8 +153,8 @@ class UserService {
 
     }
 
-    static async getUsers(token: string) {
-        return await UserData.getUsers()
+    static async getUsers(token: string, page: number, limit: number, search: string) {
+        return await UserData.getUsers(page, limit, search)
     }
 
 }

@@ -37,6 +37,9 @@ export const uploadBlogImage = z.object({
 
 export const getBlogs = z.object({
     token: z.string(),
+    page: z.number().optional(),
+    limit: z.number().optional(),
+    search: z.string().optional()
 });
 
 export const getBlog = z.object({

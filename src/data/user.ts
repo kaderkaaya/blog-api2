@@ -99,11 +99,15 @@ class UserData {
         return userBlogs;
     }
 
-    static async getUsers() {
+    static async getUsers(page: number, limit: number, search: string) {
+        const offset = (page - 1) * limit
         const users = await UserModel.find({
             verifyCode: true,
-            status: 1
+            status: 1,
+            name: { $regex: search, $options: "i" },
         })
+            .skip(offset)
+            .limit(limit)
         return users;
     }
 
