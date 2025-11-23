@@ -59,7 +59,7 @@ JWT_KEY=your_jwt_secret_key
 CLOUDINARY_API_KEY=your_cloudinary_api_key
 CLOUDINARY_CLOUD_NAME=your_cloudinary_cloud_name
 CLOUDINARY_API_SECRET=your_cloudinary_api_secret
-CLOUDINARY_ENV_VARIABLE=CLOUDINARY_URL
+CLOUDINARY_ENV_VARIABLE=your_cloudinary_url
 ```
 
 ---
@@ -69,12 +69,12 @@ CLOUDINARY_ENV_VARIABLE=CLOUDINARY_URL
 Postman collection included for easy testing:
 
 ```
-/postman/collection.json
+/postman/blog-api.postman_collection.json
 ```
 
 To import:
 
-**Postman → Import → File → collection.json**
+**Postman → Import → File → blog-api.postman_collection.json**
 
 ---
 
